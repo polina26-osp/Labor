@@ -15,7 +15,16 @@ bool posetil[MAXN];
 
 void Perebor(int nomerShaga, int tekushCity, int tekushCost) {
     if (nomerShaga == n) {
-        tekushCost += cost[tekushCity][startCity];
+        tekushCost += cost[tekushCity][startCity];                        //закрыли цикл
+
+        // выводим маршрут
+        /*
+        cout << "Маршрут: ";
+        for (int i = 0; i < n; i++) cout << tekushPut[i] << " ";
+        cout << startCity << "  | Стоимость = " << tekushCost << "\n";
+        */
+
+        // обновляем лучший маршрут
         if (tekushCost < bestCost) {
             bestCost = tekushCost;
             for (int i = 0; i < n; i++) bestPut[i] = tekushPut[i];
@@ -23,6 +32,7 @@ void Perebor(int nomerShaga, int tekushCity, int tekushCost) {
         return;
     }
 
+    //перебор всех городов, которые не посетили
     for (int next = 0; next < n; next++) {
         if (!posetil[next]) {
             posetil[next] = true;
@@ -58,7 +68,7 @@ int main() {
     cout << "Заполнить матрицу случайными значениями? (y/n): ";
     cin >> vybor;
 
-    if (vybor == 'y' || vybor == 'Y') {
+    if (vybor == 'y') {
         int minCost, maxCost;
         cout << "Введите минимальную и максимальную стоимость: ";
         cin >> minCost >> maxCost;
@@ -81,7 +91,7 @@ int main() {
             }
         }
     }
-
+    // поиск наибольшего перехода между городами
     int max = 0;
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
@@ -91,10 +101,11 @@ int main() {
     cout << "Введите начальный город (от 0 до " << n - 1 << "): ";
     cin >> startCity;
 
-    for (int i = 0; i < n; i++) posetil[i] = false;
-    posetil[startCity] = true;
+    for (int i = 0; i < n; i++) posetil[i] = false;      // все города считаем непосещенными
+    posetil[startCity] = true;                        
     tekushPut[0] = startCity;
 
+    // замер времени
     chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
     Perebor(1, startCity, 0);
     chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
