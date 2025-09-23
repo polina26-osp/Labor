@@ -43,6 +43,49 @@ void Perebor(int nomerShaga, int tekushCity, int tekushCost) {
     }
 }
 
+// эвристический метод
+void Everystic() {
+    for (int i = 0; i < n; i++) posetil[i] = false;
+
+    int totalCost = 0;
+
+    int current = startCity;
+    posetil[current] = true;
+    tekushPut[0] = current;
+
+    // находим максимально возможное ребро (для minCost)
+    int maxEdge = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            if (cost[i][j] > maxEdge) maxEdge = cost[i][j];
+
+    for (int step = 1; step < n; step++) {
+        int nextCity = -1;
+        int minCost = maxEdge + 1; // гарантированно больше любого ребра
+
+        for (int j = 0; j < n; j++) {
+            if (!posetil[j] && cost[current][j] < minCost) {
+                minCost = cost[current][j];
+                nextCity = j;
+            }
+        }
+
+        tekushPut[step] = nextCity;
+        posetil[nextCity] = true;
+        totalCost += minCost;
+        current = nextCity;
+    }
+
+    totalCost += cost[current][startCity];
+
+    cout << "\n Стоимость маршрута: " << totalCost << "\n";
+    cout << " Маршрут: ";
+    for (int i = 0; i < n; i++) cout << tekushPut[i] << " ";
+    cout << startCity << "\n";
+}
+
+
+
 // функция генерации случайной матрицы стоимости
 void RandomMatr(int minCost, int maxCost) {
     random_device randomDevice;
@@ -101,20 +144,39 @@ int main() {
     cout << "Введите начальный город (от 0 до " << n - 1 << "): ";
     cin >> startCity;
 
+    int method;
+    cout << "Выберите метод:\n1 -  полный перебор\n2 - эвристика: ";
+    cin >> method;
+
+    auto timeStart = chrono::high_resolution_clock::now();
+
+    if (method == 1) {
+        int max = 0;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (cost[i][j] > max) max = cost[i][j];
+        bestCost = max * n;
+
+
     for (int i = 0; i < n; i++) posetil[i] = false;      // все города считаем непосещенными
     posetil[startCity] = true;                        
     tekushPut[0] = startCity;
 
-    // замер времени
-    chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
     Perebor(1, startCity, 0);
-    chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
 
     cout << "\nМинимальная стоимость: " << bestCost << "\n";
     cout << "Маршрут: ";
     for (int i = 0; i < n; i++) cout << bestPut[i] << " ";
     cout << startCity << "\n";
-
+    }
+    else if (method == 2) {
+       Everystic();
+    }
+     else {
+     cout << "Неверный выбор!\n";
+     return 0;
+    }
+    auto timeEnd = chrono::high_resolution_clock::now();
     chrono::duration<double> duration = timeEnd - timeStart;
     cout << "Время выполнения: " << duration.count() << " сек.\n";
 
