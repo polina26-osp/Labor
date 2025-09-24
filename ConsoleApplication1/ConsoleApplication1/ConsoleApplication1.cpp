@@ -145,7 +145,7 @@ int main() {
     cin >> startCity;
 
     int method;
-    cout << "Выберите метод:\n1 -  полный перебор\n2 - эвристика: ";
+    cout << "Выберите метод:\n1 -  полный перебор\n2 - эвристика \n";
     cin >> method;
 
     auto timeStart = chrono::high_resolution_clock::now();
