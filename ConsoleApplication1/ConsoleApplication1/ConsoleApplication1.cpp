@@ -13,36 +13,60 @@ int bestPut[MAXN];
 int tekushPut[MAXN];
 bool posetil[MAXN];
 
-void Perebor(int nomerShaga, int tekushCity, int tekushCost) {
-    if (nomerShaga == n) {
-        tekushCost += cost[tekushCity][startCity];                        //закрыли цикл
+// Функция для получения следующей перестановки
+bool NextPermutation(int P[], int n) {
+    int i = n - 2;
+    while (i >= 0 && P[i] >= P[i + 1]) i--;
 
-        // выводим маршрут
-        /*
-        cout << "Маршрут: ";
-        for (int i = 0; i < n; i++) cout << tekushPut[i] << " ";
-        cout << startCity << "  | Стоимость = " << tekushCost << "\n";
-        */
+    if (i < 0) return false; // перестановка последняя
+    int j = n - 1;
+    while (P[j] <= P[i]) j--;
 
-        // обновляем лучший маршрут
-        if (tekushCost < bestCost) {
-            bestCost = tekushCost;
-            for (int i = 0; i < n; i++) bestPut[i] = tekushPut[i];
-        }
-        return;
+    swap(P[i], P[j]);
+
+    int left = i + 1, right = n - 1;
+    while (left < right) {
+        swap(P[left], P[right]);
+        left++;
+        right--;
     }
 
-    //перебор всех городов, которые не посетили
-    for (int next = 0; next < n; next++) {
-        if (!posetil[next]) {
-            posetil[next] = true;
-            tekushPut[nomerShaga] = next;
-            Perebor(nomerShaga + 1, next, tekushCost + cost[tekushCity][next]);
-            posetil[next] = false;
-        }
-    }
+    return true;
 }
 
+// Функция полного перебора 
+void Perebor() {
+    int perm[MAXN];
+    int idx = 0;
+
+    // список городов кроме стартового
+    for (int i = 0; i < n; i++) {
+        if (i != startCity) {
+            perm[idx++] = i;
+        }
+    }
+
+    // проверяем все перестановки
+    do {
+        int totalCost = 0;
+        int current = startCity;
+
+        for (int i = 0; i < n - 1; i++) {
+            totalCost += cost[current][perm[i]];
+            current = perm[i];
+        }
+        totalCost += cost[current][startCity]; // возврат в начало
+
+        if (totalCost < bestCost) {
+            bestCost = totalCost;
+            bestPut[0] = startCity;
+            for (int i = 0; i < n - 1; i++) {
+                bestPut[i + 1] = perm[i];
+            }
+        }
+
+    } while (NextPermutation(perm, n - 1));
+}
 // эвристический метод
 void Everystic() {
     for (int i = 0; i < n; i++) posetil[i] = false;
@@ -162,7 +186,7 @@ int main() {
     posetil[startCity] = true;                        
     tekushPut[0] = startCity;
 
-    Perebor(1, startCity, 0);
+    Perebor();
 
     cout << "\nМинимальная стоимость: " << bestCost << "\n";
     cout << "Маршрут: ";
