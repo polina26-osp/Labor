@@ -182,23 +182,23 @@ int main() {
         bestCost = max * n;
 
 
-    for (int i = 0; i < n; i++) posetil[i] = false;      // все города считаем непосещенными
-    posetil[startCity] = true;                        
-    tekushPut[0] = startCity;
+        for (int i = 0; i < n; i++) posetil[i] = false;      // все города считаем непосещенными
+        posetil[startCity] = true;
+        tekushPut[0] = startCity;
 
-    Perebor();
+        Perebor();
 
-    cout << "\nМинимальная стоимость: " << bestCost << "\n";
-    cout << "Маршрут: ";
-    for (int i = 0; i < n; i++) cout << bestPut[i] << " ";
-    cout << startCity << "\n";
+        cout << "\nМинимальная стоимость: " << bestCost << "\n";
+        cout << "Маршрут: ";
+        for (int i = 0; i < n; i++) cout << bestPut[i] << " ";
+        cout << startCity << "\n";
     }
     else if (method == 2) {
-       Everystic();
+        Everystic();
     }
-     else {
-     cout << "Неверный выбор!\n";
-     return 0;
+    else {
+        cout << "Неверный выбор!\n";
+        return 0;
     }
     auto timeEnd = chrono::high_resolution_clock::now();
     chrono::duration<double> duration = timeEnd - timeStart;
