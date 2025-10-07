@@ -107,13 +107,26 @@ int main() {
     for (int ind = 0; ind < all_i.size(); ind++) cout << all_i[ind] << " ";
     cout << "]" << endl;
 
-    cout << "Введите начало диапазона: ";
+    cout << "Введите начало диапазона (начиная с 0): ";
     cin >> firstRange;
-    cout << "Введите конец диапазона: ";
+    
+    if (firstRange < 0)
+    {
+        cerr << endl << "Ошибка: некорректный ввод первой границы";
+        return -1;
+    }
+
+    cout << "Введите конец диапазона (до " << t.size() - 1 << "): ";
     cin >> lastRange;
 
+    if (firstRange > lastRange || lastRange >= t.size())
+    {
+        cerr << endl << "Ошибка: некорректный ввод второй границы";
+        return -1;
+    }
+
     vector<int> range_i = BMsearchAllRange(t, s, firstRange, lastRange);
-    cout << "Индексы вхождений в заданном диапазоне: [ ";
+    cout << "Вхождения в заданном диапазоне: [ ";
     for (int ind = 0; ind < range_i.size(); ind++) cout << range_i[ind] << " ";
     cout << "]" << endl;
 
