@@ -95,6 +95,7 @@ vector<int> BMsearchAllRange(const string& s, const string& p, int first, int la
 int main() {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
+    int firstRange, lastRange;
     string t = "std::move_iterator is an iterator adaptor which behaves exactly like the underlying iterator";
     string s = "tor";
 
@@ -102,14 +103,19 @@ int main() {
     cout << "Первое вхождение: " << first_i << "\n";
 
     vector<int> all_i = BMsearch(t, s);
-    cout << "Все вхождения: ";
-    for (int pos : all_i) cout << pos << " ";
-    cout << "\n";
+    cout << "Все вхождения: [ ";
+    for (int ind = 0; ind < all_i.size(); ind++) cout << all_i[ind] << " ";
+    cout << "]" << endl;
 
-    vector<int> range_i = BMsearchAllRange(t, s, 17, 91);
-    cout << "Вхождения в диапазоне [17,91]: ";
-    for (int idx : range_i) cout << idx << " ";
-    cout << "\n";
+    cout << "Введите начало диапазона: ";
+    cin >> firstRange;
+    cout << "Введите конец диапазона: ";
+    cin >> lastRange;
+
+    vector<int> range_i = BMsearchAllRange(t, s, firstRange, lastRange);
+    cout << "Индексы вхождений в заданном диапазоне: [ ";
+    for (int ind = 0; ind < range_i.size(); ind++) cout << range_i[ind] << " ";
+    cout << "]" << endl;
 
     return 0;
 }
