@@ -4,17 +4,21 @@
 #include <chrono>
 using namespace std;
 
-// --- Просеивание вниз ---
+// Просеивание вниз 
 void siftDown(vector<int>& x, int start, int end) {
     int root = start;
-    while (2 * root + 1 <= end) {
-        int child = 2 * root + 1;
-        int swapIndex = root;
+    while (2 * root + 1 <= end) {  // Пока есть хотя бы левый потомок
+        int leftChild = 2 * root + 1;      
+        int rightChild = 2 * root + 2;    
+        int swapIndex = root;              // начинаем обменивать с корня
 
-        if (x[swapIndex] < x[child])
-            swapIndex = child;
-        if (child + 1 <= end && x[swapIndex] < x[child + 1])
-            swapIndex = child + 1;
+        // Сравниваем с левым потомком
+        if (x[swapIndex] < x[leftChild])
+            swapIndex = leftChild;
+
+        // Сравниваем с правым потомком (если он существует)
+        if (rightChild <= end && x[swapIndex] < x[rightChild])
+            swapIndex = rightChild;
 
         if (swapIndex == root)
             return;
@@ -24,63 +28,26 @@ void siftDown(vector<int>& x, int start, int end) {
     }
 }
 
-// --- Этап 1: построение пирамиды ---
+// Этап 1: построение пирамиды
 void buildHeap(vector<int>& x) {
     int n = x.size();
-#if 0
-     cout << "\nЭтап 1. Построение пирамиды:\n";
-      cout << "Исходный массив: ";
-      for (int i = 0; i < x.size(); i++) cout << x[i] << " ";
-      cout << "\n";
-
-      cout << "Правая часть (готовая пирамида): ";
-      for (int i = n / 2; i < n; i++) cout << x[i] << " ";
-      cout << "\nЛевая часть (просеивается): ";
-      for (int i = 0; i < n / 2; i++) cout << x[i] << " ";
-      cout << "\n\n";
-      
-#endif
-      // просеивание левой половины
+      // просеивание половины массива
     for (int i = n / 2 - 1; i >= 0; i--) {
         siftDown(x, i, n - 1);
-#if 0
-         cout << "После просеивания элемента x[" << i << "] = " << x[i] << ": ";
-         for (int j = 0; j < x.size(); j++) cout << x[j] << " ";
-         cout << "\n"; 
-#endif
     }
-#if 0
-    cout << "\nПостроенная пирамида: ";
-    for (int i = 0; i < x.size(); i++) cout << x[i] << " ";
-    cout << "\n\n"; */
-#endif
 }
 
-// --- Этап 2: сортировка ---
+// Этап 2: сортировка 
 void heapSort(vector<int>& x) {
     int n = x.size();
     buildHeap(x);
-    /* cout << "Этап 2. Основные итерации сортировки:\n\n"; */
-
-    for (int k = n - 1; k > 0; k--) {
-        //cout << "Обмен x[0] = " << x[0] << " и x[" << k << "] = " << x[k] << endl;
+    for (int k = n - 1; k > 0; k--) {        // k - индекс последнего элемента в еще не отсортированной части массива 
         swap(x[0], x[k]);
-
-        // cout << "Просеивание новой вершины x[0] = " << x[0] << " через элементы до индекса " << k - 1 << endl;
-
         siftDown(x, 0, k - 1);
-
-        /*cout << "После шага " << (n - k) << ": ";
-        for (int j = 0; j < x.size(); j++) cout << x[j] << " ";
-        cout << "\n\n"; */
     }
-
-    /*cout << "Результат сортировки: ";
-    for (int i = 0; i < x.size(); i++) cout << x[i] << " ";
-    cout << "\n";*/
 }
 
-// --- Проверка на упорядоченность ---
+// Проверка на упорядоченность 
 bool isSorted(const vector<int>& arr) {
     for (size_t i = 1; i < arr.size(); i++)
         if (arr[i - 1] > arr[i])
@@ -88,41 +55,79 @@ bool isSorted(const vector<int>& arr) {
     return true;
 }
 
-// --- Главная программа ---
 int main() {
     setlocale(LC_ALL, "Russian");
 
-    int rangeStart, rangeEnd, numValues;
-    cout << "Введите диапазон случайных чисел (начало и конец): ";
-    cin >> rangeStart >> rangeEnd;
-    cout << "Введите количество элементов массива: ";
-    cin >> numValues;
+    int choice;
+    cout << "Выберите способ заполнения массива: 1 - рандомный массив, 2 - ввод с консоли : ";
+    cin >> choice; 
 
-    // Генератор случайных чисел
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dist(rangeStart, rangeEnd);
+    vector<int> x;
 
-    vector<int> x(numValues);
-    for (int i = 0; i < numValues; i++) {
-        x[i] = dist(gen);
+    if (choice == 1) {
+        // Случайные числа
+        int rangeStart, rangeEnd, numValues;
+        cout << "Введите диапазон случайных чисел (начало и конец): ";
+        cin >> rangeStart >> rangeEnd;
+        cout << "Введите количество элементов массива: ";
+        cin >> numValues;
+
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> dist(rangeStart, rangeEnd);
+
+        x.resize(numValues);
+        for (int i = 0; i < numValues; i++) {
+            x[i] = dist(gen);
+        }
+
+    }
+ else if (choice == 2) {
+     // Ввод с консоли
+     int numValues;
+     cout << "Введите количество элементов массива: ";
+     cin >> numValues;
+
+     x.resize(numValues);
+     cout << "Введите элементы массива: ";
+     for (int i = 0; i < numValues; i++) {
+         cin >> x[i];
+     }
+   }
+
+ else {
+     cout << "Ошибка: введено что-то кроме 1 или 2 \n";
+     return 1;
     }
 
+#if 0
+    // Вывод исходного массива
     cout << "\nСгенерированный массив:\n";
     for (int i = 0; i < x.size(); i++) {
         cout << x[i] << " ";
     }
     cout << "\n";
+#endif
 
-    // Замер времени
-    auto start = chrono::high_resolution_clock::now();
+    // Замер времени и сортировка
+    chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
+
     heapSort(x);
-    auto end = chrono::high_resolution_clock::now();
+
+    chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
 
     chrono::duration<double> duration = end - start;
-    cout << "\nВремя сортировки: " << duration.count() << " секунд ("
-        << chrono::duration_cast<chrono::milliseconds>(duration).count()
-        << " мс)\n";
+    cout << "\nВремя сортировки: " << duration.count() << " секунд";
+
+#if 0
+    // Вывод отсортированного массива
+    cout << "\nОтсортированный массив:\n";
+    for (int i = 0; i < x.size(); i++) {
+        cout << x[i] << " ";
+    }
+    cout << "\n";
+    cout << "\n";
+#endif
 
     cout << "Отсортирован ли массив? ";
     if (isSorted(x))
