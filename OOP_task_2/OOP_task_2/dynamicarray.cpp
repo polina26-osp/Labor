@@ -4,6 +4,21 @@
 // Конструктор по умолчанию ( создаёт пустой массив (нулевой длины, без выделенной памяти ) )
 DynamicArray::DynamicArray() : arrayData_(nullptr), arrayLength_(0) {}
 
+// Конструктор из обычного массива
+DynamicArray::DynamicArray(int initialLength) : arrayLength_(initialLength)
+{
+    std::cout << "DynamicArray::DynamicArray(int)" << std::endl;
+
+    arrayData_ = new int[initialLength];
+
+    for (int i = 0; i < arrayLength_; i++)
+    {
+        arrayData_[0];
+    }
+}
+// Получение размера (количества хранимых элементов в настоящий момент)
+int DynamicArray:: getLength() const { return arrayLength_; }
+
 // Конструктор копирования
 DynamicArray::DynamicArray(const DynamicArray& otherArray)
 {
