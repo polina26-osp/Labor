@@ -77,11 +77,47 @@ public:
     void swap(DynamicArray& other);
 
     // Потоковый вывод
-    template<typename T>
-    friend std::ostream& operator<<(std::ostream& os, const DynamicArray<T>& arr);
-
+    friend std::ostream& operator<<(std::ostream& os, const DynamicArray<ItemType>& arr) {
+        os << "[ ";
+        for (int i = 0; i < arr.arrayLength_; ++i) {
+            os << arr.arrayData_[i];
+            if (i < arr.arrayLength_ - 1)
+                os << ", ";
+        }
+        os << " ]";
+        return os;
+    }
     // Потоковый ввод 
-    friend std::istream& operator>>(std::istream& is, DynamicArray<T>& arr);
+    friend std::istream& operator>>(std::istream& is, DynamicArray<ItemType>& arr) {
+        int newLength;
+        std::cout << "\nВведите количество элементов: ";
+        is >> newLength;
+
+        // Проверка на корректность длины
+        if (newLength < 0) {
+            newLength = 0;
+        }
+
+        // Освобождаем старую память
+        delete[] arr.arrayData_;
+
+        if (newLength > 0) {
+            arr.arrayLength_ = newLength;
+            arr.arrayData_ = new ItemType[newLength];
+
+            std::cout << "Введите " << newLength << " элементов через пробел: ";
+            for (int i = 0; i < newLength; ++i) {
+                is >> arr.arrayData_[i];
+            }
+        }
+        else {
+            // Создаем пустой массив
+            arr.arrayData_ = nullptr;
+            arr.arrayLength_ = 0;
+        }
+
+        return is;
+    }
 
 private:
 

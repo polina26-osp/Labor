@@ -13,18 +13,16 @@ int main()
     // Ввод первого массива int
     DynamicArray<int> arr1;
     cin >> arr1;
+    cout << "Первый массив: " << arr1 << "\n";
 
     // Ввод второго массива int
     DynamicArray<int> arr2;
     cin >> arr2;
+    cout << "Второй массив: " << arr2 << "\n";
 
-    // Ввод третьего массива unsigned int
+    // Ввод и вывод третьего массива unsigned int
     DynamicArray<unsigned int> arr4;
     cin >> arr4;
-
-    // Вывод массивов
-    cout << "\nПервый массив: " << arr1 << "\n";
-    cout << "Второй массив: " << arr2 << "\n";
     cout << "Третий массив: " << arr4 << "\n";
 
     // Вставка
