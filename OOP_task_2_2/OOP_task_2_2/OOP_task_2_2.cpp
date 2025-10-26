@@ -9,72 +9,23 @@ int main()
 {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
-    int n, m, s;
 
-    // Ввод первого массива
-    cout << "Введите количество элементов для первого массива (int): ";
-    cin >> n;
-    DynamicArray<int> arr1(n);
-    cout << "Введите элементы через пробел:\n";
-    
-    int count = 0;
-    
-    for (int i = 0; i < n && cin; i++)
-    {
-        if (!(cin >> arr1[i]))
-        {
-            cout << "Ошибка: введено не число\n";
-            return 1;
-        }
-        count++;
-    }
-    
-    // Ввод второго массива
-    cout << "\nВведите количество элементов для второго массива (int): ";
-    cin >> m;
-    DynamicArray<int> arr2(m);
-    cout << "Введите элементы через пробел:\n";
+    // Ввод первого массива int
+    DynamicArray<int> arr1;
+    cin >> arr1;
 
-    count = 0;
-    for (int i = 0; i < m && cin; i++)
-    {
-        if (!(cin >> arr2[i]))
-        {
-            cout << "Ошибка: введено не число\n";
-            return 1;
-        }
-        count++;
-    }
+    // Ввод второго массива int
+    DynamicArray<int> arr2;
+    cin >> arr2;
 
-    // Ввод третьего массива
-    cout << "\nВведите количество элементов для третьего массива (unsigned int): ";
-    cin >> s;
-    DynamicArray<unsigned int> arr4(s);
-    cout << "Введите элементы через пробел:\n";
-
-    count = 0;
-    for (int i = 0; i < s && cin; i++)
-    {
-        if (!(cin >> arr4[i]))
-        {
-            cout << "Ошибка: введено не число\n";
-            return 1;
-        }
-        count++;
-    }
+    // Ввод третьего массива unsigned int
+    DynamicArray<unsigned int> arr4;
+    cin >> arr4;
 
     // Вывод массивов
-    cout << "\nПервый массив: [ ";
-    for (int i = 0; i < arr1.getLength(); i++) cout << arr1[i] << (i < arr1.getLength() - 1 ? ", " : " ");
-    cout << "]\n";
-
-    cout << "Второй массив: [ ";
-    for (int i = 0; i < arr2.getLength(); i++) cout << arr2[i] << (i < arr2.getLength() - 1 ? ", " : " ");
-    cout << "]\n";
-
-    cout << "Третий массив: [ ";
-    for (int i = 0; i < arr4.getLength(); i++) cout << arr4[i] << (i < arr4.getLength() - 1 ? ", " : " ");
-    cout << "]\n";
+    cout << "\nПервый массив: " << arr1 << "\n";
+    cout << "Второй массив: " << arr2 << "\n";
+    cout << "Третий массив: " << arr4 << "\n";
 
     // Вставка
     int index, value;

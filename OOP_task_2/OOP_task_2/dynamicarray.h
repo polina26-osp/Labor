@@ -10,7 +10,7 @@ public:
     DynamicArray();
 
     // Конструктор из обычного массива
-    DynamicArray(int);
+    DynamicArray(int initialLength);
 
     // Конструктор копирования ( создаёт новый объект как копию уже существующего массива )
     DynamicArray(const DynamicArray&);

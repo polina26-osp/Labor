@@ -10,7 +10,8 @@ class DynamicArray
 public:
 
     DynamicArray();
-    DynamicArray(int);
+    DynamicArray(int initialLength);
+    DynamicArray(const ItemType* arr, int length);
     DynamicArray(const DynamicArray&);
     DynamicArray(DynamicArray&&);
     ~DynamicArray();
@@ -76,26 +77,11 @@ public:
     void swap(DynamicArray& other);
 
     // Потоковый вывод
-    friend std::ostream& operator<<(std::ostream& os, const DynamicArray<ItemType>& arr)
-    {
-        os << "[ ";
-        for (int i = 0; i < arr.arrayLength_; ++i)
-        {
-            os << arr.arrayData_[i];
-            if (i < arr.arrayLength_ - 1)
-                os << ", ";
-        }
-        os << " ]";
-        return os;
-    }
+    template<typename T>
+    friend std::ostream& operator<<(std::ostream& os, const DynamicArray<T>& arr);
 
     // Потоковый ввод 
-    friend std::istream& operator>>(std::istream& is, DynamicArray<ItemType>& arr)
-    {
-        for (int i = 0; i < arr.arrayLength_; ++i)
-            is >> arr.arrayData_[i];
-        return is;
-    }
+    friend std::istream& operator>>(std::istream& is, DynamicArray<T>& arr);
 
 private:
 
@@ -103,6 +89,19 @@ private:
     int arrayLength_;
 };
 
+template<typename ItemType>
+DynamicArray<ItemType>::DynamicArray(const ItemType* arr, int length)
+{
+    if (!arr || length <= 0) {
+        arrayData_ = nullptr;
+        arrayLength_ = 0;
+        return;
+    }
+    arrayLength_ = length;
+    arrayData_ = new ItemType[arrayLength_];
+    for (int i = 0; i < arrayLength_; ++i)
+        arrayData_[i] = arr[i];
+}
 
 template<typename ItemType>
 DynamicArray<ItemType>::DynamicArray() : arrayData_(nullptr), arrayLength_(0)
@@ -266,8 +265,6 @@ void DynamicArray<ItemType>::add(const ItemType& value)
     delete[] arrayData_;
     arrayData_ = tempArrayData;
 }
-
-// ========== Дополнения для функционала вашей версии ==========
 
 template<typename ItemType>
 int DynamicArray<ItemType>::find(const ItemType value) const
