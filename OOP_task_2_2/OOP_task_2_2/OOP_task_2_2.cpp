@@ -10,13 +10,22 @@ int main()
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
 
-    
+    // Конструктор из обычного массива
     int testArray[] = { 1, 2, 3, 4, 5 };
     int testLength = std::size(testArray);
 
     DynamicArray<int> testArr(testArray, testLength);
     cout << "Создан из обычного массива: " << testArr << endl;
     cout << "Длина: " << testArr.getLength() << endl << endl;
+
+    // Конструктор копирования
+    DynamicArray<int> arrCopy(testArr);
+    cout << "Скопированный массив: " << arrCopy << endl;
+
+    // Оператор присваивания
+    DynamicArray<int> arrAssigned;
+    arrAssigned = testArr;
+    cout << "Присвоенный массив: " << arrAssigned << endl;
 
     // Ввод первого массива int
     DynamicArray<int> arr1;
@@ -44,6 +53,18 @@ int main()
         cout << "]\n";
     }
     else cout << "Неверный индекс!\n";
+
+    // Функция find
+    int searchValue;
+    cout << "Введите значение для поиска в первом массиве: ";
+    cin >> searchValue;
+    int foundIndex = arr1.find(searchValue);
+    if (foundIndex != -1) {
+        cout << "Элемент " << searchValue << " найден по индексу: " << foundIndex << endl;
+    }
+    else {
+        cout << "Элемент " << searchValue << " не найден" << endl;
+    }
 
     // Удаление по индексу
     cout << "\nВведите индекс для удаления из первого массива: ";
@@ -82,6 +103,35 @@ int main()
     cout << "]\n";
     cout << "Максимум: " << arr1.getMax() << ", Минимум: " << arr1.getMin() << "\n";
 
+
+    // Изменение элемента
+    cout << "\nВведите индекс и новое значение для изменения элемента первого массива: ";
+    cin >> index >> value;
+    if (index >= 0 && index < arr1.getLength())
+    {
+        arr1[index] = value;
+        cout << "После изменения: [ ";
+        for (int i = 0; i < arr1.getLength(); i++) cout << arr1[i] << (i < arr1.getLength() - 1 ? ", " : " ");
+        cout << "]\n";
+    }
+    else cout << "Неверный индекс!\n";
+    
+  
+
+    // Функция swap
+    DynamicArray<int> swap1 = arr1;
+    DynamicArray<int> swap2 = arr2;
+
+    cout << "До swap:" << endl;
+    cout << "swap1: " << swap1 << endl;
+    cout << "swap2: " << swap2 << endl;
+
+    swap1.swap(swap2);
+
+    cout << "После swap:" << endl;
+    cout << "swap1: " << swap1 << endl;
+    cout << "swap2: " << swap2 << endl;
+
     // Конкатенация массивов
     DynamicArray<int> arr3 = arr1 + arr2;
     cout << "\nРезультат arr1 + arr2: [ ";
@@ -97,18 +147,6 @@ int main()
     cout << "\nСравнение arr1 и arr3:\n";
     cout << "arr1 == arr3? " << (arr1 == arr3 ? "Да" : "Нет") << "\n";
     cout << "arr1 != arr2? " << (arr1 != arr2 ? "Да" : "Нет") << "\n";
-
-    // Изменение элемента
-    cout << "\nВведите индекс и новое значение для изменения элемента первого массива: ";
-    cin >> index >> value;
-    if (index >= 0 && index < arr1.getLength())
-    {
-        arr1[index] = value;
-        cout << "После изменения: [ ";
-        for (int i = 0; i < arr1.getLength(); i++) cout << arr1[i] << (i < arr1.getLength() - 1 ? ", " : " ");
-        cout << "]\n";
-    }
-    else cout << "Неверный индекс!\n";
 
     return 0;
 }
