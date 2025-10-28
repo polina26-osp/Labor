@@ -5,15 +5,19 @@
 DynamicArray::DynamicArray() : arrayData_(nullptr), arrayLength_(0) {}
 
 // Конструктор из обычного массива
-DynamicArray::DynamicArray(int initialLength) : arrayLength_(initialLength)
+DynamicArray::DynamicArray(const int* data, int initialLength) : arrayLength_(initialLength)
 {
-    std::cout << "DynamicArray::DynamicArray(int)" << std::endl;
+    std::cout << "DynamicArray::DynamicArray(const int*, int)" << std::endl;
 
-    arrayData_ = new int[initialLength];
-
-    for (int i = 0; i < arrayLength_; i++)
-    {
-        arrayData_[i]=0;
+    if (initialLength > 0) {
+        arrayData_ = new int[initialLength];
+        for (int i = 0; i < initialLength; i++) {
+            arrayData_[i] = data[i];
+        }
+    }
+    else {
+        arrayData_ = nullptr;
+        arrayLength_ = 0;
     }
 }
 
