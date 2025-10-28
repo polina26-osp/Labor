@@ -10,6 +10,14 @@ int main()
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
 
+    
+    int testArray[] = { 1, 2, 3, 4, 5 };
+    int testLength = std::size(testArray);
+
+    DynamicArray<int> testArr(testArray, testLength);
+    cout << "Создан из обычного массива: " << testArr << endl;
+    cout << "Длина: " << testArr.getLength() << endl << endl;
+
     // Ввод первого массива int
     DynamicArray<int> arr1;
     cin >> arr1;

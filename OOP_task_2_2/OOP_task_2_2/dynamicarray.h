@@ -10,8 +10,7 @@ class DynamicArray
 public:
 
     DynamicArray();
-    DynamicArray(int initialLength);
-    DynamicArray(const ItemType* arr, int length);
+    DynamicArray(const ItemType* arr, int initialLength);
     DynamicArray(const DynamicArray&);
     DynamicArray(DynamicArray&&);
     ~DynamicArray();
@@ -125,37 +124,33 @@ private:
     int arrayLength_;
 };
 
+// Конструктор из обычного массива 
 template<typename ItemType>
-DynamicArray<ItemType>::DynamicArray(const ItemType* arr, int length)
+DynamicArray<ItemType>::DynamicArray(const ItemType* arr, int initialLength)
 {
-    if (!arr || length <= 0) {
+    std::cout << "DynamicArray::DynamicArray(const ItemType*, int) " <<  std::endl;
+
+    if (!arr || initialLength <= 0) {
         arrayData_ = nullptr;
         arrayLength_ = 0;
+        std::cout << "Создан пустой массив" << std::endl;
         return;
     }
-    arrayLength_ = length;
+
+    arrayLength_ = initialLength;
     arrayData_ = new ItemType[arrayLength_];
-    for (int i = 0; i < arrayLength_; ++i)
+
+    // Копируем данные из переданного массива
+    for (int i = 0; i < arrayLength_; ++i) {
         arrayData_[i] = arr[i];
+    }
 }
+
 
 template<typename ItemType>
 DynamicArray<ItemType>::DynamicArray() : arrayData_(nullptr), arrayLength_(0)
 {
     std::cout << "DynamicArray::DynamicArray()" << std::endl;
-}
-
-template<typename ItemType>
-DynamicArray<ItemType>::DynamicArray(int initialLength) : arrayLength_(initialLength)
-{
-    std::cout << "DynamicArray::DynamicArray(int)" << std::endl;
-
-    arrayData_ = new ItemType[initialLength];
-
-    for (int i = 0; i < arrayLength_; i++)
-    {
-        arrayData_[i] = ItemType();
-    }
 }
 
 template<typename ItemType>
