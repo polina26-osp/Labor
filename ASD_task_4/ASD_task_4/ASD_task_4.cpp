@@ -1,8 +1,30 @@
 ﻿#include <iostream>
 #include <vector>
 #include <chrono>
-#include <cmath>
 #include <Windows.h>
+
+// Функция для ввода массива с консоли
+std::vector<int> inputArrayFromConsole() {
+    std::vector<int> arr;
+    int numValues;
+
+    std::cout << "Введите количество элементов массива: ";
+    std::cin >> numValues;
+
+    if (numValues <= 0) {
+        std::cout << "Некорректный размер массива!" << std::endl;
+        return arr;
+    }
+
+    arr.resize(numValues);
+    std::cout << "Введите " << numValues << " элементов массива через пробел: ";
+
+    for (int i = 0; i < numValues; i++) {
+        std::cin >> arr[i];
+    }
+
+    return arr;
+}
 
 // Функция для чтения массива из файла
 std::vector<int> readArrayFromFile(const std::string& filename) {
@@ -60,7 +82,7 @@ void shellSort(std::vector<int>& arr, const std::vector<int>& gaps) {
                 int k = j - s;
                 while (k >= 0 && arr[k] > x) {
                     arr[k + s] = arr[k];
-                    k -= s;
+                    k = k - s;
                 }
                 arr[k + s] = x;
             }
@@ -71,7 +93,7 @@ void shellSort(std::vector<int>& arr, const std::vector<int>& gaps) {
 // Генерация последовательности шагов по методу Шелла
 std::vector<int> gasp1(int n) {
     std::vector<int> gaps;
-    for (int h = n / 2; h > 0; h /= 2) {
+    for (int h = n / 2; h > 0; h = h / 2) {
         gaps.push_back(h);
     }
     return gaps;
@@ -82,18 +104,12 @@ std::vector<int> gasp2(int n) {
     std::vector<int> gaps;
     int m = 1;
     while (1) {
-        int gap = (1 << m) - 1; // 2^m - 1
+        int gap = pow(2, m) - 1;
         if (gap > n) break;
         gaps.push_back(gap);
         m++;
     }
-    // Разворот последовательности для убывания вручную
-    std::vector<int> reversed_gaps;
-    for (int i = gaps.size() - 1; i >= 0; i--) {
-        reversed_gaps.push_back(gaps[i]);
-    }
-    return reversed_gaps;
-}
+    
 
 // Генерация последовательности шагов по методу Кнута
 std::vector<int> gasp3(int n) {
@@ -103,13 +119,7 @@ std::vector<int> gasp3(int n) {
         gaps.push_back(h);
         h = 3 * h + 1;
     }
-    // Разворот последовательности для убывания вручную
-    std::vector<int> reversed_gaps;
-    for (int i = gaps.size() - 1; i >= 0; i--) {
-        reversed_gaps.push_back(gaps[i]);
-    }
-    return reversed_gaps;
-}
+   
 
 // Тестирование алгоритма на заданном массиве
 void testSort(const std::vector<int>& testArray, const std::string& gapType) {
@@ -148,28 +158,48 @@ void testSort(const std::vector<int>& testArray, const std::string& gapType) {
 int main() {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
-    // Список файлов с массивами
-    std::vector<std::string> filenames = {
-     "array_10000_-10_10.txt",
-     "array_10000_-1000_1000.txt",
-     "array_10000_-100000_100000.txt",
-     "array_100000_-10_10.txt",
-     "array_100000_-1000_1000.txt",
-     "array_100000_-100000_100000.txt",
-     "array_1000000_-10_10.txt",
-     "array_1000000_-1000_1000.txt",
-     "array_1000000_-100000_100000.txt",
-    };
+    int choice;
+    std::vector<std::vector<int>> testArrays;
 
-    // Чтение массивов из файлов
-    std::vector<std::vector<int>> testArrays = readArraysFromFiles(filenames);
+    std::cout << "Выберите способ ввода данных: 1 - файлы с массивами, 2 - вручную :" << std::endl;
+    std::cin >> choice;
 
-    if (testArrays.empty()) {
-        std::cout << "Не удалось прочитать ни одного массива из файлов!" << std::endl;
+    if (choice == 1) {
+        std::vector<std::string> filenames = {
+            "array_10000_-10_10.txt",
+            "array_10000_-1000_1000.txt",
+            "array_10000_-100000_100000.txt",
+            "array_100000_-10_10.txt",
+            "array_100000_-1000_1000.txt",
+            "array_100000_-100000_100000.txt",
+            "array_1000000_-10_10.txt",
+            "array_1000000_-1000_1000.txt",
+            "array_1000000_-100000_100000.txt",
+        };
+
+        testArrays = readArraysFromFiles(filenames);
+
+        if (testArrays.empty()) {
+            std::cout << "Ошибка: не удалось прочитать ни одного массива из файлов" << std::endl;
+            return 1;
+        }
+    }
+    else if (choice == 2) {
+        std::vector<int> manualArray = inputArrayFromConsole();
+        if (!manualArray.empty()) {
+            testArrays.push_back(manualArray);
+        }
+        else {
+            std::cout << "Ошибка: не удалось создать массив" << std::endl;
+            return 1;
+        }
+    }
+    else {
+        std::cout << "Не 1 или 2 " << std::endl;
         return 1;
     }
 
-    std::cout << "\nНачинаем тестирование алгоритмов Шелла:\n" << std::endl;
+    std::cout << "\nТестирование:\n" << std::endl;
 
     for (size_t i = 0; i < testArrays.size(); ++i) {
         std::cout << "Тестовый массив " << i + 1 << " (размер: " << testArrays[i].size() << "):\n";
