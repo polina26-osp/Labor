@@ -147,26 +147,18 @@ void testSort(const std::vector<int>& testArray, const std::string& gapType) {
     else if (gapType == "Gaps3") {
         gaps = gaps3(testArray.size());
     }
+    std::vector<int> arr = testArray;
+    std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+    shellSort(arr, gaps);
+    std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = timeEnd - timeStart;
 
-    double totalTime = 0;
-    const int runs = 3;
-
-    for (int i = 0; i < runs; ++i) {
-        std::vector<int> arr = testArray;
-        std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
-        shellSort(arr, gaps);
-        std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> duration = timeEnd - timeStart;
-        totalTime += duration.count();
-
-        if (!isSorted(arr)) {
-            std::cout << "Ошибка: массив не отсортирован!" << std::endl;
-            return;
-        }
+    if (!isSorted(arr)) {
+        std::cout << "Ошибка: массив не отсортирован!" << std::endl;
+        return;
     }
 
-    std::cout << gapType << " среднее время = "
-        << totalTime / runs << " секунд" << std::endl;
+    std::cout << gapType << " время = " << duration.count() << " секунд" << std::endl;
 }
 
 int main() {
