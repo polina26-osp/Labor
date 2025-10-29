@@ -77,7 +77,7 @@ void shellSort(std::vector<int>& arr, const std::vector<int>& gaps) {
         int s = gaps[i];
         for (int b = 0; b < s; ++b) {
             // Сортировка вставками для подпоследовательности
-            for (size_t j = b + s; j < arr.size(); j += s) {
+            for (int j = b + s; j < arr.size(); j = j + s) {
                 int x = arr[j];
                 int k = j - s;
                 while (k >= 0 && arr[k] > x) {
@@ -91,7 +91,7 @@ void shellSort(std::vector<int>& arr, const std::vector<int>& gaps) {
 }
 
 // Генерация последовательности шагов по методу Шелла
-std::vector<int> gasp1(int n) {
+std::vector<int> gaps1(int n) {
     std::vector<int> gaps;
     for (int h = n / 2; h > 0; h = h / 2) {
         gaps.push_back(h);
@@ -100,7 +100,7 @@ std::vector<int> gasp1(int n) {
 }
 
 // Генерация последовательности шагов по второму методу
-std::vector<int> gasp2(int n) {
+std::vector<int> gaps2(int n) {
     std::vector<int> gaps;
     int m = 1;
     while (1) {
@@ -109,29 +109,43 @@ std::vector<int> gasp2(int n) {
         gaps.push_back(gap);
         m++;
     }
+    // Разворот последовательности для убывания 
+    std::vector<int> reversed_gaps;
+    for (int i = (int)gaps.size() - 1; i >= 0; i--) {
+        reversed_gaps.push_back(gaps[i]);
+    }
+    return reversed_gaps;
+}
     
 
 // Генерация последовательности шагов по методу Кнута
-std::vector<int> gasp3(int n) {
+std::vector<int> gaps3(int n) {
     std::vector<int> gaps;
     int h = 1;
     while (h <= n) {
         gaps.push_back(h);
         h = 3 * h + 1;
     }
+    // Разворот последовательности для убывания 
+    std::vector<int> reversed_gaps;
+    for (int i = (int)gaps.size() - 1; i >= 0; i--) {
+        reversed_gaps.push_back(gaps[i]);
+    }
+    return reversed_gaps;
+}
    
 
 // Тестирование алгоритма на заданном массиве
 void testSort(const std::vector<int>& testArray, const std::string& gapType) {
     std::vector<int> gaps;
-    if (gapType == "Gasp1") {
-        gaps = gasp1(testArray.size());
+    if (gapType == "Gaps1") {
+        gaps = gaps1(testArray.size());
     }
-    else if (gapType == "Gasp2") {
-        gaps = gasp2(testArray.size());
+    else if (gapType == "Gaps2") {
+        gaps = gaps2(testArray.size());
     }
-    else if (gapType == "Gasp3") {
-        gaps = gasp3(testArray.size());
+    else if (gapType == "Gaps3") {
+        gaps = gaps3(testArray.size());
     }
 
     double totalTime = 0;
@@ -199,13 +213,11 @@ int main() {
         return 1;
     }
 
-    std::cout << "\nТестирование:\n" << std::endl;
-
     for (size_t i = 0; i < testArrays.size(); ++i) {
         std::cout << "Тестовый массив " << i + 1 << " (размер: " << testArrays[i].size() << "):\n";
-        testSort(testArrays[i], "Gasp1");
-        testSort(testArrays[i], "Gasp2");
-        testSort(testArrays[i], "Gasp3");
+        testSort(testArrays[i], "Gaps1");
+        testSort(testArrays[i], "Gaps2");
+        testSort(testArrays[i], "Gaps3");
         std::cout << std::endl;
     }
 
