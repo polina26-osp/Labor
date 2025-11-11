@@ -1,14 +1,14 @@
-#include <cstring>
+п»ї#include <cstring>
 #include <string>
 #include "booleanvector.h"
 
-// Расчет количества байтов для хранения заданного количества битов
+// Р Р°СЃС‡РµС‚ РєРѕР»РёС‡РµСЃС‚РІР° Р±Р°Р№С‚РѕРІ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ Р·Р°РґР°РЅРЅРѕРіРѕ РєРѕР»РёС‡РµСЃС‚РІР° Р±РёС‚РѕРІ
 uint32_t BooleanVector::calculateNumBytes(const uint32_t numBits) const
 {
     return (numBits + 7) / 8;
 }
 
-// Очистка неиспользуемых битов в последнем байте
+// РћС‡РёСЃС‚РєР° РЅРµРёСЃРїРѕР»СЊР·СѓРµРјС‹С… Р±РёС‚РѕРІ РІ РїРѕСЃР»РµРґРЅРµРј Р±Р°Р№С‚Рµ
 void BooleanVector::clearUnusedBits()
 {
     if (numBits_ % 8 != 0 && numBytes_ > 0)
@@ -18,7 +18,7 @@ void BooleanVector::clearUnusedBits()
     }
 }
 
-// Конструктор с параметрами (заданным размером и начальным значением)
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё (Р·Р°РґР°РЅРЅС‹Рј СЂР°Р·РјРµСЂРѕРј Рё РЅР°С‡Р°Р»СЊРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј)
 BooleanVector::BooleanVector(const uint32_t numBits, const bool initialValue)
     : numBits_(numBits)
 {
@@ -36,7 +36,7 @@ BooleanVector::BooleanVector(const uint32_t numBits, const bool initialValue)
     clearUnusedBits();
 }
 
-// Конструктор из массива const char *
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РјР°СЃСЃРёРІР° const char *
 BooleanVector::BooleanVector(const char* str)
 {
     if (str == nullptr) {
@@ -45,7 +45,7 @@ BooleanVector::BooleanVector(const char* str)
         numBytes_ = 0;
         return;
     }
-    // Определяем длину строки
+    // РћРїСЂРµРґРµР»СЏРµРј РґР»РёРЅСѓ СЃС‚СЂРѕРєРё
     uint32_t length = 0;
     while (str[length] != '\0') length++;
     numBits_ = length;
@@ -53,11 +53,11 @@ BooleanVector::BooleanVector(const char* str)
 
     if (numBytes_ > 0) {
         vectorData_ = new uint8_t[numBytes_];
-        // Инициализируем нулями
+        // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РЅСѓР»СЏРјРё
         for (uint32_t i = 0; i < numBytes_; i++) {
             vectorData_[i] = 0;
         }
-        // Заполняем вектор из строки
+        // Р—Р°РїРѕР»РЅСЏРµРј РІРµРєС‚РѕСЂ РёР· СЃС‚СЂРѕРєРё
         for (uint32_t i = 0; i < numBits_; i++) {
             if (str[i] == '1') {
                 uint32_t byteIndex = i / 8;
@@ -71,7 +71,7 @@ BooleanVector::BooleanVector(const char* str)
     }
 }
 
-// Конструктор копирования
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 BooleanVector::BooleanVector(const BooleanVector& other)
 {
     if (other.numBits_ == 0) {
@@ -87,14 +87,14 @@ BooleanVector::BooleanVector(const BooleanVector& other)
     std::memcpy(vectorData_, other.vectorData_, numBytes_);
 }
 
-// Деструктор
+// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 BooleanVector::~BooleanVector()
 {
     delete[] vectorData_;
     vectorData_ = nullptr;
 }
 
-// Обмен содержимым с другим вектором
+// РћР±РјРµРЅ СЃРѕРґРµСЂР¶РёРјС‹Рј СЃ РґСЂСѓРіРёРј РІРµРєС‚РѕСЂРѕРј
 void BooleanVector::swap(BooleanVector& other) 
 {
     std::swap(vectorData_, other.vectorData_);
@@ -102,7 +102,7 @@ void BooleanVector::swap(BooleanVector& other)
     std::swap(numBytes_, other.numBytes_);
 }
 
-// Вывод вектора (потоковый)
+// Р’С‹РІРѕРґ РІРµРєС‚РѕСЂР° (РїРѕС‚РѕРєРѕРІС‹Р№)
 std::ostream& operator<<(std::ostream& os, const BooleanVector& vec)
 {
     for (uint32_t i = 0; i < vec.getLength(); i++)
@@ -112,7 +112,7 @@ std::ostream& operator<<(std::ostream& os, const BooleanVector& vec)
     return os;
 }
 
-// Ввод вектора (потоковый)
+// Р’РІРѕРґ РІРµРєС‚РѕСЂР° (РїРѕС‚РѕРєРѕРІС‹Р№)
 std::istream& operator>>(std::istream& is, BooleanVector& vec)
 {
     std::string input;
@@ -123,7 +123,7 @@ std::istream& operator>>(std::istream& is, BooleanVector& vec)
     return is;
 }
 
-// Инверсия всех компонент вектора
+// РРЅРІРµСЂСЃРёСЏ РІСЃРµС… РєРѕРјРїРѕРЅРµРЅС‚ РІРµРєС‚РѕСЂР°
 void BooleanVector::invert()
 {
     for (uint32_t i = 0; i < numBytes_; i++)
@@ -133,7 +133,7 @@ void BooleanVector::invert()
     clearUnusedBits();
 }
 
-// Инверсия i-ой компоненты
+// РРЅРІРµСЂСЃРёСЏ i-РѕР№ РєРѕРјРїРѕРЅРµРЅС‚С‹
 void BooleanVector::invertBit(uint32_t index)
 {
     if (index >= numBits_) return;
@@ -143,17 +143,17 @@ void BooleanVector::invertBit(uint32_t index)
     vectorData_[byteIndex] ^= (1 << bitIndex);
 }
 
-// Установка в 0/1 i-ой компоненты
+// РЈСЃС‚Р°РЅРѕРІРєР° РІ 0/1 i-РѕР№ РєРѕРјРїРѕРЅРµРЅС‚С‹
 void BooleanVector::setBit(const uint32_t index, const bool value)
 {
     (*this)[index] = value;
 }
 
-// Установка в 0/1 k компонент, начиная с i-ой;
+// РЈСЃС‚Р°РЅРѕРІРєР° РІ 0/1 k РєРѕРјРїРѕРЅРµРЅС‚, РЅР°С‡РёРЅР°СЏ СЃ i-РѕР№;
 void BooleanVector::setBits(uint32_t index, uint32_t k, bool value)
 {
     if (index >= numBits_) {
-        throw std::runtime_error("Индекс за пределами диапазона битового вектора");
+        throw std::runtime_error("РРЅРґРµРєСЃ Р·Р° РїСЂРµРґРµР»Р°РјРё РґРёР°РїР°Р·РѕРЅР° Р±РёС‚РѕРІРѕРіРѕ РІРµРєС‚РѕСЂР°");
     }
 
     uint32_t endIndex = index + k;
@@ -165,7 +165,7 @@ void BooleanVector::setBits(uint32_t index, uint32_t k, bool value)
     }
 }
 
-// Установка в 0/1 всех компонент вектора
+// РЈСЃС‚Р°РЅРѕРІРєР° РІ 0/1 РІСЃРµС… РєРѕРјРїРѕРЅРµРЅС‚ РІРµРєС‚РѕСЂР°
 void BooleanVector::setAll(bool value)
 {
     uint8_t fillValue = value ? 0xFF : 0x00;
@@ -176,7 +176,7 @@ void BooleanVector::setAll(bool value)
     clearUnusedBits();
 }
 
-// Вес вектора (количество единичных компонент)
+// Р’РµСЃ РІРµРєС‚РѕСЂР° (РєРѕР»РёС‡РµСЃС‚РІРѕ РµРґРёРЅРёС‡РЅС‹С… РєРѕРјРїРѕРЅРµРЅС‚)
 uint32_t BooleanVector::getWeight() const
 {
     uint32_t weight = 0;
@@ -190,31 +190,31 @@ uint32_t BooleanVector::getWeight() const
     return weight;
 }
 
-// Перегрузки 
+// РџРµСЂРµРіСЂСѓР·РєРё 
 
-// Неконстантное получение компоненты ([ ])
+// РќРµРєРѕРЅСЃС‚Р°РЅС‚РЅРѕРµ РїРѕР»СѓС‡РµРЅРёРµ РєРѕРјРїРѕРЅРµРЅС‚С‹ ([ ])
 BooleanVector::BitReference BooleanVector::operator[](const uint32_t index)
 {
     if (index >= numBits_) {
-        throw std::runtime_error("Индекс за пределами диапазона вектора");
+        throw std::runtime_error("РРЅРґРµРєСЃ Р·Р° РїСЂРµРґРµР»Р°РјРё РґРёР°РїР°Р·РѕРЅР° РІРµРєС‚РѕСЂР°");
     }
     uint32_t byteIndex = index / 8;
     uint32_t bitIndex = index % 8;
     return BooleanVector::BitReference(&vectorData_[byteIndex], bitIndex);
 }
 
-// Константное получение компоненты ([ ])
+// РљРѕРЅСЃС‚Р°РЅС‚РЅРѕРµ РїРѕР»СѓС‡РµРЅРёРµ РєРѕРјРїРѕРЅРµРЅС‚С‹ ([ ])
 bool BooleanVector::operator[](const uint32_t index) const
 {
     if (index >= numBits_) {
-        throw std::runtime_error("Индекс за пределами диапазона вектора");
+        throw std::runtime_error("РРЅРґРµРєСЃ Р·Р° РїСЂРµРґРµР»Р°РјРё РґРёР°РїР°Р·РѕРЅР° РІРµРєС‚РѕСЂР°");
     }
     uint32_t byteIndex = index / 8;
     uint32_t bitIndex = index % 8;
     return (vectorData_[byteIndex] >> bitIndex) & 1;
 }
 
-// Побитовое умножение(И) (&)
+// РџРѕР±РёС‚РѕРІРѕРµ СѓРјРЅРѕР¶РµРЅРёРµ(Р) (&)
 BooleanVector operator&(const BooleanVector& lhs, const BooleanVector& rhs)
 {
     BooleanVector result(lhs);
@@ -222,7 +222,7 @@ BooleanVector operator&(const BooleanVector& lhs, const BooleanVector& rhs)
     return result;
 }
 
-// Побитовое умножение с присваиванием (И) (&=)
+// РџРѕР±РёС‚РѕРІРѕРµ СѓРјРЅРѕР¶РµРЅРёРµ СЃ РїСЂРёСЃРІР°РёРІР°РЅРёРµРј (Р) (&=)
 BooleanVector& BooleanVector::operator&=(const BooleanVector& other)
 {
     uint32_t minBytes = (numBytes_ < other.numBytes_) ? numBytes_ : other.numBytes_;
@@ -233,7 +233,7 @@ BooleanVector& BooleanVector::operator&=(const BooleanVector& other)
     return *this;
 }
 
-// Побитовое сложение (|)
+// РџРѕР±РёС‚РѕРІРѕРµ СЃР»РѕР¶РµРЅРёРµ (|)
 BooleanVector operator|(const BooleanVector& lhs, const BooleanVector& rhs)
 {
     BooleanVector result(lhs);
@@ -241,7 +241,7 @@ BooleanVector operator|(const BooleanVector& lhs, const BooleanVector& rhs)
     return result;
 }
 
-// Побитовое сложение с присваиванием (|=)
+// РџРѕР±РёС‚РѕРІРѕРµ СЃР»РѕР¶РµРЅРёРµ СЃ РїСЂРёСЃРІР°РёРІР°РЅРёРµРј (|=)
 BooleanVector& BooleanVector::operator|=(const BooleanVector& other)
 {
     uint32_t minBytes = (numBytes_ < other.numBytes_) ? numBytes_ : other.numBytes_;
@@ -252,7 +252,7 @@ BooleanVector& BooleanVector::operator|=(const BooleanVector& other)
     return *this;
 }
 
-// Побитовое исключающее ИЛИ (^)
+// РџРѕР±РёС‚РѕРІРѕРµ РёСЃРєР»СЋС‡Р°СЋС‰РµРµ РР›Р (^)
 BooleanVector operator^(const BooleanVector& lhs, const BooleanVector& rhs)
 {
     BooleanVector result(lhs);
@@ -260,7 +260,7 @@ BooleanVector operator^(const BooleanVector& lhs, const BooleanVector& rhs)
     return result;
 }
 
-// Побитовое исключающее ИЛИ с присваиванием (^=)
+// РџРѕР±РёС‚РѕРІРѕРµ РёСЃРєР»СЋС‡Р°СЋС‰РµРµ РР›Р СЃ РїСЂРёСЃРІР°РёРІР°РЅРёРµРј (^=)
 BooleanVector& BooleanVector::operator^=(const BooleanVector& other)
 {
     uint32_t minBytes = (numBytes_ < other.numBytes_) ? numBytes_ : other.numBytes_;
@@ -271,7 +271,7 @@ BooleanVector& BooleanVector::operator^=(const BooleanVector& other)
     return *this;
 }
 
-// Сдвиг влево (<<)
+// РЎРґРІРёРі РІР»РµРІРѕ (<<)
 BooleanVector operator<<(const BooleanVector& vec, uint32_t shift)
 {
     BooleanVector result(vec);
@@ -279,7 +279,7 @@ BooleanVector operator<<(const BooleanVector& vec, uint32_t shift)
     return result;
 }
 
-// Сдвиг вправо (>>)
+// РЎРґРІРёРі РІРїСЂР°РІРѕ (>>)
 BooleanVector operator>>(const BooleanVector& vec, uint32_t shift)
 {
     BooleanVector result(vec);
@@ -287,7 +287,7 @@ BooleanVector operator>>(const BooleanVector& vec, uint32_t shift)
     return result;
 }
 
-// Сдвиг влево с присваиванием (<<=)
+// РЎРґРІРёРі РІР»РµРІРѕ СЃ РїСЂРёСЃРІР°РёРІР°РЅРёРµРј (<<=)
 BooleanVector& BooleanVector::operator<<=(uint32_t shift)
 {
     if (shift == 0) return *this;
@@ -308,7 +308,7 @@ BooleanVector& BooleanVector::operator<<=(uint32_t shift)
     return *this;
 }
 
-// Сдвиг вправо с присваиванием  (>>=)
+// РЎРґРІРёРі РІРїСЂР°РІРѕ СЃ РїСЂРёСЃРІР°РёРІР°РЅРёРµРј  (>>=)
 BooleanVector& BooleanVector::operator>>=(uint32_t shift)
 {
     if (shift == 0) return *this;
@@ -330,7 +330,7 @@ BooleanVector& BooleanVector::operator>>=(uint32_t shift)
 }
 
 
-// Побитовое НЕ (инверсия) (~)
+// РџРѕР±РёС‚РѕРІРѕРµ РќР• (РёРЅРІРµСЂСЃРёСЏ) (~)
 BooleanVector operator~(const BooleanVector& vec)
 {
     BooleanVector result(vec);
@@ -338,7 +338,7 @@ BooleanVector operator~(const BooleanVector& vec)
     return result;
 }
 
-// Присваивание (=)
+// РџСЂРёСЃРІР°РёРІР°РЅРёРµ (=)
 BooleanVector& BooleanVector::operator=(const BooleanVector& other)
 {
     if (this != &other) {
@@ -357,13 +357,13 @@ BooleanVector& BooleanVector::operator=(const BooleanVector& other)
     return *this;
 }
 
-// Реализация конструктора BitReference
+// Р РµР°Р»РёР·Р°С†РёСЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° BitReference
 BooleanVector::BitReference::BitReference(uint8_t* bytePtr, uint8_t bitIndex)
     : bytePtr_(bytePtr), bitIndex_(bitIndex)
 {
 }
 
-// Присваивание bool
+// РџСЂРёСЃРІР°РёРІР°РЅРёРµ bool
 BooleanVector::BitReference& BooleanVector::BitReference::operator=(bool newValue)
 {
     uint8_t mask = 1 << bitIndex_;
@@ -378,7 +378,7 @@ BooleanVector::BitReference& BooleanVector::BitReference::operator=(bool newValu
     return *this;
 }
 
-// Присваивание от другого BitReference
+// РџСЂРёСЃРІР°РёРІР°РЅРёРµ РѕС‚ РґСЂСѓРіРѕРіРѕ BitReference
 BooleanVector::BitReference& BooleanVector::BitReference::operator=(const BitReference& other)
 {
     bool value = static_cast<bool>(other);
@@ -394,7 +394,7 @@ BooleanVector::BitReference& BooleanVector::BitReference::operator=(const BitRef
     return *this;
 }
 
-// Побитовое И с присваиванием
+// РџРѕР±РёС‚РѕРІРѕРµ Р СЃ РїСЂРёСЃРІР°РёРІР°РЅРёРµРј
 BooleanVector::BitReference& BooleanVector::BitReference::operator&=(bool value)
 {
     bool current = static_cast<bool>(*this);
@@ -402,54 +402,54 @@ BooleanVector::BitReference& BooleanVector::BitReference::operator&=(bool value)
     return *this;
 }
 
-// Побитовое И между BitReference
+// РџРѕР±РёС‚РѕРІРѕРµ Р РјРµР¶РґСѓ BitReference
 bool BooleanVector::BitReference::operator&(const BitReference& other) const {
     return bool(*this) & bool(other);
 }
 
-// Побитовое исключающее ИЛИ между BitReference
+// РџРѕР±РёС‚РѕРІРѕРµ РёСЃРєР»СЋС‡Р°СЋС‰РµРµ РР›Р РјРµР¶РґСѓ BitReference
 bool BooleanVector::BitReference::operator^(const BitReference& other) const {
     return bool(*this) ^ bool(other);
 }
 
-// Инверсия (унарное НЕ)
+// РРЅРІРµСЂСЃРёСЏ (СѓРЅР°СЂРЅРѕРµ РќР•)
 bool BooleanVector::BitReference::operator~() const {
     return !bool(*this);
 }
 
-// Сравнение на равенство с другим BitReference
+// РЎСЂР°РІРЅРµРЅРёРµ РЅР° СЂР°РІРµРЅСЃС‚РІРѕ СЃ РґСЂСѓРіРёРј BitReference
 bool BooleanVector::BitReference::operator==(const BitReference& other) const {
     return bool(*this) == bool(other);
 }
 
-// Сравнение на неравенство с другим BitReference
+// РЎСЂР°РІРЅРµРЅРёРµ РЅР° РЅРµСЂР°РІРµРЅСЃС‚РІРѕ СЃ РґСЂСѓРіРёРј BitReference
 bool BooleanVector::BitReference::operator!=(const BitReference& other) const {
     return bool(*this) != bool(other);
 }
 
-// Сравнение на равенство с bool
+// РЎСЂР°РІРЅРµРЅРёРµ РЅР° СЂР°РІРµРЅСЃС‚РІРѕ СЃ bool
 bool BooleanVector::BitReference::operator==(bool value) const {
     return bool(*this) == value;
 }
 
-// Сравнение на неравенство с bool
+// РЎСЂР°РІРЅРµРЅРёРµ РЅР° РЅРµСЂР°РІРµРЅСЃС‚РІРѕ СЃ bool
 bool BooleanVector::BitReference::operator!=(bool value) const {
     return bool(*this) != value;
 }
 
-// Преобразование в bool (чтение значения бита) 
+// РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РІ bool (С‡С‚РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ Р±РёС‚Р°) 
 BooleanVector::BitReference::operator bool() const
 {
     return (*bytePtr_ >> bitIndex_) & 1;
 }
 
-// Преобразование в int
+// РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РІ int
 BooleanVector::BitReference::operator int() const
 {
     return static_cast<int>(static_cast<bool>(*this));
 }
 
-//Оператор сравнения
+//РћРїРµСЂР°С‚РѕСЂ СЃСЂР°РІРЅРµРЅРёСЏ
 bool BooleanVector::operator==(const BooleanVector& other) const
 {
     if (numBits_ != other.numBits_) return false;

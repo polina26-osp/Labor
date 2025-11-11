@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <stdint.h>
 #include <iostream>
@@ -9,43 +9,43 @@ private:
     class BitReference;
 
 public:
-    // Конструкторы
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
     BooleanVector() = default;
     BooleanVector(const uint32_t numBits, const bool initialValue = false);
     ~BooleanVector();
-    // Конструктор из массива const char *
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РјР°СЃСЃРёРІР° const char *
     BooleanVector(const char* charArray);
 
-    // Конструктор копирования
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
     BooleanVector(const BooleanVector& other);
     BooleanVector& operator=(const BooleanVector& other);
 
-    // Методы доступа
+    // РњРµС‚РѕРґС‹ РґРѕСЃС‚СѓРїР°
     uint32_t getLength() const { return numBits_; }
     uint32_t getWeight() const;
 
-    // Операторы сравнения
+    // РћРїРµСЂР°С‚РѕСЂС‹ СЃСЂР°РІРЅРµРЅРёСЏ
     bool operator==(const BooleanVector& other) const;
     bool operator!=(const BooleanVector& other) const { return !(*this == other); }
 
-    BitReference operator[](const uint32_t index); // Оператор индексации для неконстантных объектов
-    bool operator[](const uint32_t index) const;   // Оператор индексации для константных объектов
+    BitReference operator[](const uint32_t index); // РћРїРµСЂР°С‚РѕСЂ РёРЅРґРµРєСЃР°С†РёРё РґР»СЏ РЅРµРєРѕРЅСЃС‚Р°РЅС‚РЅС‹С… РѕР±СЉРµРєС‚РѕРІ
+    bool operator[](const uint32_t index) const;   // РћРїРµСЂР°С‚РѕСЂ РёРЅРґРµРєСЃР°С†РёРё РґР»СЏ РєРѕРЅСЃС‚Р°РЅС‚РЅС‹С… РѕР±СЉРµРєС‚РѕРІ
 
     void swap(BooleanVector& other);
-    void invert(); // инверсия всех компонент вектора
-    void invertBit(uint32_t index); // инверсия i-ой компоненты
-    void setBit(const uint32_t index, const bool value); // установка в 0/1 i-ой компоненты
-    void setBits(uint32_t startIndex, uint32_t k, bool value); // установка k компонент, начиная с i-ой
-    void setAll(bool value); // установка в 0/1 всех компонент вектора
+    void invert(); // РёРЅРІРµСЂСЃРёСЏ РІСЃРµС… РєРѕРјРїРѕРЅРµРЅС‚ РІРµРєС‚РѕСЂР°
+    void invertBit(uint32_t index); // РёРЅРІРµСЂСЃРёСЏ i-РѕР№ РєРѕРјРїРѕРЅРµРЅС‚С‹
+    void setBit(const uint32_t index, const bool value); // СѓСЃС‚Р°РЅРѕРІРєР° РІ 0/1 i-РѕР№ РєРѕРјРїРѕРЅРµРЅС‚С‹
+    void setBits(uint32_t startIndex, uint32_t k, bool value); // СѓСЃС‚Р°РЅРѕРІРєР° k РєРѕРјРїРѕРЅРµРЅС‚, РЅР°С‡РёРЅР°СЏ СЃ i-РѕР№
+    void setAll(bool value); // СѓСЃС‚Р°РЅРѕРІРєР° РІ 0/1 РІСЃРµС… РєРѕРјРїРѕРЅРµРЅС‚ РІРµРєС‚РѕСЂР°
 
-    // Побитовые операции с присваиванием
+    // РџРѕР±РёС‚РѕРІС‹Рµ РѕРїРµСЂР°С†РёРё СЃ РїСЂРёСЃРІР°РёРІР°РЅРёРµРј
     BooleanVector& operator&=(const BooleanVector& other);
     BooleanVector& operator|=(const BooleanVector& other);
     BooleanVector& operator^=(const BooleanVector& other);
     BooleanVector& operator<<=(uint32_t shift);
     BooleanVector& operator>>=(uint32_t shift);
 
-    // Ввод/вывод
+    // Р’РІРѕРґ/РІС‹РІРѕРґ
     friend std::ostream& operator<<(std::ostream& os, const BooleanVector& vec);
     friend std::istream& operator>>(std::istream& is, BooleanVector& vec);
 
@@ -54,9 +54,9 @@ private:
     uint32_t numBits_ = 0;
     uint32_t numBytes_ = 0;
 
-    // Вспомогательные методы
+    // Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РјРµС‚РѕРґС‹
     uint32_t calculateNumBytes(const uint32_t numBits) const;
-    void clearUnusedBits(); // очистка неиспользуемых битов в последнем байте
+    void clearUnusedBits(); // РѕС‡РёСЃС‚РєР° РЅРµРёСЃРїРѕР»СЊР·СѓРµРјС‹С… Р±РёС‚РѕРІ РІ РїРѕСЃР»РµРґРЅРµРј Р±Р°Р№С‚Рµ
 };
 
 class BooleanVector::BitReference
@@ -64,27 +64,27 @@ class BooleanVector::BitReference
 public:
     BitReference(uint8_t* bytePtr, uint8_t bitIndex);
 
-    // Основные операции
+    // РћСЃРЅРѕРІРЅС‹Рµ РѕРїРµСЂР°С†РёРё
     BitReference& operator=(const BitReference& other);
     BitReference& operator=(bool value);
 
-    // Бинарные операции с присваиванием
+    // Р‘РёРЅР°СЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё СЃ РїСЂРёСЃРІР°РёРІР°РЅРёРµРј
     BitReference& operator&=(bool value);
 
-    // Бинарные операции между BitReference
+    // Р‘РёРЅР°СЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё РјРµР¶РґСѓ BitReference
     bool operator&(const BitReference& other) const;
     bool operator^(const BitReference& other) const;
 
-    // Унарные операции
+    // РЈРЅР°СЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё
     bool operator~() const;
 
-    // Операции сравнения
+    // РћРїРµСЂР°С†РёРё СЃСЂР°РІРЅРµРЅРёСЏ
     bool operator==(const BitReference& other) const;
     bool operator!=(const BitReference& other) const;
     bool operator==(bool value) const;
     bool operator!=(bool value) const;
 
-    // Преобразования типов
+    // РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ С‚РёРїРѕРІ
     operator bool() const;
     operator int() const;
 
@@ -93,7 +93,7 @@ private:
     uint8_t bitIndex_;
 };
 
-// Свободные операторы
+// РЎРІРѕР±РѕРґРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹
 BooleanVector operator&(const BooleanVector& lhs, const BooleanVector& rhs);
 BooleanVector operator|(const BooleanVector& lhs, const BooleanVector& rhs);
 BooleanVector operator^(const BooleanVector& lhs, const BooleanVector& rhs);
