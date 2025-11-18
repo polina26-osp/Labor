@@ -8,6 +8,7 @@ uint32_t BooleanVector::calculateNumBytes(const uint32_t numBits) const
     return (numBits + 7) / 8;
 }
 
+
 // Очистка неиспользуемых битов в последнем байте
 void BooleanVector::clearUnusedBits()
 {

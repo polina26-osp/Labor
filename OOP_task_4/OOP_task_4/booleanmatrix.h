@@ -11,7 +11,7 @@ public:
     // Конструкторы
     BooleanMatrix() = default;  // Конструктор по умолчанию
     BooleanMatrix(const uint32_t numRows, const uint32_t numColumns, const bool initialValue = false);
-    BooleanMatrix(const char** charMatrix, const uint32_t numRows, const uint32_t numColumns);
+    BooleanMatrix(const char** charMatrix, const uint32_t numRows);
     BooleanMatrix(const BooleanMatrix&) = default;   // Конструктор копирования
     ~BooleanMatrix() = default;  // Деструктор
 
@@ -40,8 +40,8 @@ public:
     BooleanMatrix& operator&=(const BooleanMatrix& other);
     BooleanMatrix& operator|=(const BooleanMatrix& other);
     BooleanMatrix& operator^=(const BooleanMatrix& other);
-
-    friend BooleanMatrix operator~(const BooleanMatrix& matrix);
+   
+    void addRow(const BooleanVector& row);   // Публичный метод для добавления строк
 
 private:
     DynamicArray<BooleanVector> matrixData_;
@@ -51,5 +51,7 @@ private:
 BooleanMatrix operator&(const BooleanMatrix& lhs, const BooleanMatrix& rhs);
 BooleanMatrix operator|(const BooleanMatrix& lhs, const BooleanMatrix& rhs);
 BooleanMatrix operator^(const BooleanMatrix& lhs, const BooleanMatrix& rhs);
+BooleanMatrix operator~(const BooleanMatrix& matrix);
+
 std::ostream& operator<<(std::ostream& os, const BooleanMatrix& matrix);
 std::istream& operator>>(std::istream& is, BooleanMatrix& matrix);

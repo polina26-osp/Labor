@@ -11,7 +11,7 @@ BooleanMatrix::BooleanMatrix(const uint32_t numRows, const uint32_t numColumns, 
 }
 
 // Конструктор из матрицы char
-BooleanMatrix::BooleanMatrix(const char** charMatrix, const uint32_t numRows, const uint32_t numColumns)
+BooleanMatrix::BooleanMatrix(const char** charMatrix, const uint32_t numRows)
 {
     for (uint32_t rowIndex = 0; rowIndex < numRows; ++rowIndex)
     {
@@ -145,14 +145,10 @@ const BooleanVector& BooleanMatrix::operator[](const uint32_t rowIndex) const
 BooleanMatrix& BooleanMatrix::operator&=(const BooleanMatrix& other)
 {
     const uint32_t minRows = (numRows() < other.numRows()) ? numRows() : other.numRows();
-    const uint32_t minCols = (numColumns() < other.numColumns()) ? numColumns() : other.numColumns();
 
     for (uint32_t i = 0; i < minRows; ++i)
     {
-        for (uint32_t j = 0; j < minCols; ++j)
-        {
-            (*this)[i][j] = (*this)[i][j] & other[i][j];
-        }
+        (*this)[i] &= other[i];
     }
     return *this;
 }
@@ -161,14 +157,10 @@ BooleanMatrix& BooleanMatrix::operator&=(const BooleanMatrix& other)
 BooleanMatrix& BooleanMatrix::operator|=(const BooleanMatrix& other)
 {
     const uint32_t minRows = (numRows() < other.numRows()) ? numRows() : other.numRows();
-    const uint32_t minCols = (numColumns() < other.numColumns()) ? numColumns() : other.numColumns();
 
     for (uint32_t i = 0; i < minRows; ++i)
     {
-        for (uint32_t j = 0; j < minCols; ++j)
-        {
-            (*this)[i][j] = (*this)[i][j] | other[i][j];
-        }
+        (*this)[i] |= other[i];
     }
     return *this;
 }
@@ -177,14 +169,9 @@ BooleanMatrix& BooleanMatrix::operator|=(const BooleanMatrix& other)
 BooleanMatrix& BooleanMatrix::operator^=(const BooleanMatrix& other)
 {
     const uint32_t minRows = (numRows() < other.numRows()) ? numRows() : other.numRows();
-    const uint32_t minCols = (numColumns() < other.numColumns()) ? numColumns() : other.numColumns();
-
     for (uint32_t i = 0; i < minRows; ++i)
     {
-        for (uint32_t j = 0; j < minCols; ++j)
-        {
-            (*this)[i][j] = (*this)[i][j] ^ other[i][j];
-        }
+        (*this)[i] ^= other[i];
     }
     return *this;
 }
@@ -217,11 +204,17 @@ BooleanMatrix operator^(const BooleanMatrix& lhs, const BooleanMatrix& rhs)
 BooleanMatrix operator~(const BooleanMatrix& matrix)
 {
     BooleanMatrix result;
-    for (int i = 0; i < matrix.numRows(); ++i)
+    for (uint32_t i = 0; i < matrix.numRows(); ++i)
     {
-        result.matrixData_.add(~matrix[i]);
+        result.addRow(~matrix[i]);
     }
     return result;
+}
+
+//
+void BooleanMatrix::addRow(const BooleanVector& row)
+{
+    matrixData_.add(row);
 }
 
 // Потоковый вывод

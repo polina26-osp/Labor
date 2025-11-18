@@ -28,7 +28,7 @@ int main()
         "0101",
         "1100"
     };
-    BooleanMatrix matrix2(charMatrix, 3, 4);
+    BooleanMatrix matrix2(charMatrix, 3);
     cout << "\nMatrix2 (из char матрицы):" << endl;
     cout << matrix2;
 
@@ -103,8 +103,8 @@ int main()
     const char* charMatrix5[] = { "1100", "1010", "0110" };
     const char* charMatrix6[] = { "1010", "0101", "1100" };
 
-    BooleanMatrix matrix5(charMatrix5, 3, 4);
-    BooleanMatrix matrix6(charMatrix6, 3, 4);
+    BooleanMatrix matrix5(charMatrix5, 3);
+    BooleanMatrix matrix6(charMatrix6, 3);
 
     cout << "\nmatrix5:" << endl << matrix5;
     cout << "\nmatrix6:" << endl << matrix6;
@@ -124,18 +124,18 @@ int main()
     // 9. Тестирование составных присваиваний
     cout << "\n9. Тестирование присваиваний:" << endl;
 
-    BooleanMatrix matrix7(charMatrix5, 3, 4);
-    BooleanMatrix matrix8(charMatrix6, 3, 4);
+    BooleanMatrix matrix7(charMatrix5, 3);
+    BooleanMatrix matrix8(charMatrix6, 3);
 
     cout << "matrix7 исходный:" << endl << matrix7;
     matrix7 &= matrix8;
     cout << "\nmatrix7 &= matrix8:" << endl << matrix7;
 
-    matrix7 = BooleanMatrix(charMatrix5, 3, 4);
+    matrix7 = BooleanMatrix(charMatrix5, 3);
     matrix7 |= matrix8;
     cout << "\nmatrix7 |= matrix8:" << endl << matrix7;
 
-    matrix7 = BooleanMatrix(charMatrix5, 3, 4);
+    matrix7 = BooleanMatrix(charMatrix5, 3);
     matrix7 ^= matrix8;
     cout << "\nmatrix7 ^= matrix8:" << endl << matrix7;
 
