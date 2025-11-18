@@ -146,4 +146,13 @@ int main()
     matrix2[0][0] = true;
     cout << "\nПосле matrix2[0][0] = true:" << endl;
     cout << matrix2;
+
+    // 11. Тестирование потокового ввода и вывода
+    cout << "\n11. Тестирование потокового ввода и вывода:" << endl;
+    BooleanMatrix matrixIn;
+    cout << "Введите матрицу:" << endl;
+    cin >> matrixIn;
+
+    cout << "Вы ввели матрицу:" << endl;
+    cout << matrixIn;
 }
