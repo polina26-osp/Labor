@@ -201,12 +201,12 @@ BooleanMatrix operator^(const BooleanMatrix& lhs, const BooleanMatrix& rhs)
 }
 
 // Построчная побитовая инверсия (~)
-BooleanMatrix operator~(const BooleanMatrix& matrix)
+BooleanMatrix BooleanMatrix::operator~() const
 {
     BooleanMatrix result;
-    for (uint32_t i = 0; i < matrix.numRows(); ++i)
+    for (uint32_t i = 0; i < numRows(); ++i)
     {
-        result.addRow(~matrix[i]);
+        result.matrixData_.add(~matrixData_[i]);
     }
     return result;
 }

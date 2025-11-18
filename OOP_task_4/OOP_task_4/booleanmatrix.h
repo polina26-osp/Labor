@@ -40,6 +40,8 @@ public:
     BooleanMatrix& operator&=(const BooleanMatrix& other);
     BooleanMatrix& operator|=(const BooleanMatrix& other);
     BooleanMatrix& operator^=(const BooleanMatrix& other);
+
+    BooleanMatrix operator~() const;
    
     void addRow(const BooleanVector& row);   // Публичный метод для добавления строк
 
@@ -51,7 +53,6 @@ private:
 BooleanMatrix operator&(const BooleanMatrix& lhs, const BooleanMatrix& rhs);
 BooleanMatrix operator|(const BooleanMatrix& lhs, const BooleanMatrix& rhs);
 BooleanMatrix operator^(const BooleanMatrix& lhs, const BooleanMatrix& rhs);
-BooleanMatrix operator~(const BooleanMatrix& matrix);
 
 std::ostream& operator<<(std::ostream& os, const BooleanMatrix& matrix);
 std::istream& operator>>(std::istream& is, BooleanMatrix& matrix);
