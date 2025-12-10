@@ -13,21 +13,27 @@ int main() {
 
     cout << "Результат: " << emptySet << endl;
     cout << "Мощность: " << emptySet.getCardinality() << endl;
-    assert(emptySet.getCardinality() == 0);
+    if (emptySet.getCardinality() != 0) {
+        cout << "Ошибка: Мощность пустого множества должна быть 0" << endl;
+    }
 
     cout << "\nКонструктор из строки:" << endl;
     CharacterSet set1("abcde");
     cout << "Строка: \"abcde\"" << endl;
     cout << "Результат: " << set1 << endl;
     cout << "Мощность: " << set1.getCardinality() << endl;
-    assert(set1.getCardinality() == 5); 
+    if (set1.getCardinality() != 5) {
+        cout << "Ошибка: Мощность множества должна быть 5" << endl;
+    }
 
     cout << "\nКонструктор копирования:" << endl;
     CharacterSet copySet(set1);
     cout << "Оригинал: " << set1 << endl;
     cout << "Копия: " << copySet << endl;
     cout << "Равны? " << (copySet == set1 ? "Да" : "Нет") << endl;
-    assert(copySet == set1);
+    if (!(copySet == set1)) {
+        cout << "Ошибка: Копия должна быть равна оригиналу" << endl;
+    }
 
     cout << "\nДеструктор:" << endl;
     CharacterSet* dynamicSet = new CharacterSet("abcde");
@@ -51,14 +57,20 @@ int main() {
     cout << "Множество: " << set3 << endl;
     cout << "Содержит 'a'? " << (set3.contains('a') ? "Да" : "Нет") << endl;
     cout << "Содержит 'z'? " << (set3.contains('z') ? "Да" : "Нет") << endl;
-    assert(set3.contains('a') == true); 
-    assert(set3.contains('z') == false);
+    if (!set3.contains('a')) {
+        cout << "Ошибка: Множество должно содержать символ 'a'" << endl;
+    }
+    if (set3.contains('z')) {
+        cout << "Ошибка: Множество не должно содержать символ 'z'" << endl;
+    }
 
     cout << "\nПолучение мощности (getCardinality):" << endl;
     CharacterSet set4("abcde abc");
     cout << "Множество: " << set4 << endl;
     cout << "Мощность: " << set4.getCardinality() << endl;
-    assert(set4.getCardinality() == 6); 
+    if (set4.getCardinality() != 6) {
+        cout << "Ошибка: Мощность множества должна быть 6" << endl;
+    }
 
     cout << "\nПрисваивание (operator=):" << endl;
     CharacterSet set5;
@@ -66,7 +78,9 @@ int main() {
     cout << "Исходное: " << set4 << endl;
     cout << "После присваивания: " << set5 << endl;
     cout << "Равны? " << (set5 == set4 ? "Да" : "Нет") << endl;
-    assert(set5 == set4);
+    if (!(set5 == set4)) {
+        cout << "Ошибка: Множества должны быть равны после присваивания" << endl;
+    }
 
     cout << "\nСравнение на равенство (operator==):" << endl;
     CharacterSet set6a("abc");
@@ -74,7 +88,9 @@ int main() {
     cout << "Первое множество: " << set6a << endl;
     cout << "Второе множество: " << set6b << endl;
     cout << "Равны? " << (set6a == set6b ? "Да" : "Нет") << endl;
-    assert(set6a == set6b);
+    if (!(set6a == set6b)) {
+        cout << "Ошибка: Два одинаковых множества должны быть равны" << endl;
+    }
 
     cout << "\nСравнение на неравенство (operator!=):" << endl;
     CharacterSet set7a("abc");
@@ -82,7 +98,9 @@ int main() {
     cout << "Первое множество: " << set7a << endl;
     cout << "Второе множество: " << set7b << endl;
     cout << "Не равны? " << (set7a != set7b ? "Да" : "Нет") << endl;
-    assert(set7a != set7b);
+    if (!(set7a != set7b)) {
+        cout << "Ошибка: Разные множества должны быть не равны" << endl;
+    }
 
     cout << "\nОбъединение множеств (operator|):" << endl;
     CharacterSet set8a("abc");
@@ -92,7 +110,9 @@ int main() {
     cout << "Множество B: " << set8b << endl;
     cout << "Объединение A | B: " << unionSet << endl;
     cout << "Мощность: " << unionSet.getCardinality() << endl;
-    assert(unionSet.getCardinality() == 5); 
+    if (unionSet.getCardinality() != 5) {
+        cout << "Ошибка: Мощность объединения должна быть 5" << endl;
+    }
 
     cout << "\nПересечение множеств (operator&):" << endl;
     CharacterSet set9a("abc");
@@ -102,7 +122,9 @@ int main() {
     cout << "Множество B: " << set9b << endl;
     cout << "Пересечение A & B: " << intersectSet << endl;
     cout << "Мощность: " << intersectSet.getCardinality() << endl;
-    assert(intersectSet.getCardinality() == 2); 
+    if (intersectSet.getCardinality() != 2) {
+        cout << "Ошибка: Мощность пересечения должна быть 2" << endl;
+    }
 
     cout << "\nРазность множеств (operator/):" << endl;
     CharacterSet set10a("abcde");
@@ -112,7 +134,9 @@ int main() {
     cout << "Множество B: " << set10b << endl;
     cout << "Разность A / B: " << diffSet << endl;
     cout << "Мощность: " << diffSet.getCardinality() << endl;
-    assert(diffSet.getCardinality() == 2); 
+    if (diffSet.getCardinality() != 2) {
+        cout << "Ошибка: Мощность разности должна быть 2" << endl;
+    }
 
     cout << "\nДополнение множества (operator~):" << endl;
     CharacterSet set11("ab");
@@ -122,7 +146,9 @@ int main() {
     cout << "Мощность дополнения: " << complementSet.getCardinality() << endl;
     cout << "Содержит 'a' в дополнении? " << (complementSet.contains('a') ? "Да" : "Нет") << endl;
     cout << "Содержит 'c' в дополнении? " << (complementSet.contains('c') ? "Да" : "Нет") << endl;
-    assert(complementSet.getCardinality() == 254); // 256 - 2 = 254
+    if (complementSet.getCardinality() != 254) {
+        cout << "Ошибка: Мощность дополнения множества из 2 элементов должна быть 254 " << endl;
+    }
 
     cout << "\nДобавление элемента (operator+):" << endl;
     CharacterSet set12("abc");
@@ -131,7 +157,9 @@ int main() {
     cout << "После добавления 'd': " << set12plus << endl;
     cout << "Содержит 'd'? " << (set12plus.contains('d') ? "Да" : "Нет") << endl;
     cout << "Мощность: " << set12plus.getCardinality() << endl;
-    assert(set12plus.getCardinality() == 4); 
+    if (set12plus.getCardinality() != 4) {
+        cout << "Ошибка: Мощность после добавления 'd' к множеству {a,b,c} должна быть 4" << endl;
+    }
 
     cout << "\nУдаление элемента (operator-):" << endl;
     CharacterSet set13("abc");
@@ -140,15 +168,19 @@ int main() {
     cout << "После удаления 'b': " << set13minus << endl;
     cout << "Содержит 'b'? " << (set13minus.contains('b') ? "Да" : "Нет") << endl;
     cout << "Мощность: " << set13minus.getCardinality() << endl;
-    assert(set13minus.getCardinality() == 2); 
+    if (set13minus.getCardinality() != 2) {
+        cout << "Ошибка: Мощность после удаления 'b' из множества {a,b,c} должна быть 2" << endl;
+    }
 
     cout << "\nДобавление существующего элемента:" << endl;
     CharacterSet set14a("abc");
     CharacterSet set14a_plus = set14a + 'a';
     cout << "Исходное множество: " << set14a << endl;
     cout << "После добавления 'a': " << set14a_plus << endl;
-    cout << "Мощность не изменилась: " << set14a_plus.getCardinality() << endl;
-    assert(set14a_plus.getCardinality() == 3); 
+    cout << "Мощность: " << set14a_plus.getCardinality() << endl;
+    if (set14a_plus.getCardinality() != 3) {
+        cout << "Ошибка: Мощность не должна измениться при добавлении существующего элемента" << endl;
+    }
 
     cout << "\nУдаление несуществующего элемента:" << endl;
     CharacterSet set14b("abc");
@@ -156,7 +188,9 @@ int main() {
     cout << "Исходное множество: " << set14b << endl;
     cout << "После удаления 'z': " << set14b_minus << endl;
     cout << "Множества равны? " << (set14b == set14b_minus ? "Да" : "Нет") << endl;
-    assert(set14b_minus == set14b);
+    if (!(set14b == set14b_minus)) {
+        cout << "Ошибка: Множества должны остаться равными при удалении несуществующего элемента" << endl;
+    }
 
     return 0;
 }

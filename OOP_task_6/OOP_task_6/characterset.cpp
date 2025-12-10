@@ -131,8 +131,8 @@ bool CharacterSet::operator!=(const CharacterSet& other) const
 // Перегрузка оператора вывода в консоль
 std::ostream& operator<<(std::ostream& outputStream, const CharacterSet& characterSet)
 {
-    outputStream << "{";
-    bool first = true;
+    outputStream << "{";  
+    bool first = true;    
 
     for (uint32_t idx = 0; idx < 256; ++idx)
     {
@@ -140,25 +140,25 @@ std::ostream& operator<<(std::ostream& outputStream, const CharacterSet& charact
         {
             if (!first)
             {
-                outputStream << ", ";
+                outputStream << ", "; 
             }
 
             char ch = static_cast<char>(idx);
-            if (ch >= 32 && ch <= 126) 
+            if (ch >= 32 && ch <= 126)  
             {
                 outputStream << "'" << ch << "'";
             }
-            else \
+            else
             {
                 outputStream << "0x" << std::hex << idx << std::dec;
             }
 
-            first = false;
+            first = false;  
         }
     }
 
-    outputStream << "}";
-    return outputStream;
+    outputStream << "}";  
+    return outputStream;  
 }
 
 // Перегрузка оператора ввода из консоли
