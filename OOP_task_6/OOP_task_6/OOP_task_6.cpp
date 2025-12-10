@@ -1,6 +1,5 @@
 ﻿#include "characterset.h"
 #include <iostream>
-#include <cassert>
 #include <sstream>
 
 using namespace std;
@@ -41,14 +40,14 @@ int main() {
     delete dynamicSet;
 
     cout << "\nВывод в консоль (operator<<):" << endl;
-    CharacterSet set2("abc");
+    CharacterSet set2("Hello, world!");
     cout << "Множество: " << set2 << endl;
 
     cout << "\nВвод из консоли (operator>>):" << endl;
-    istringstream inputStream("abcde");
+    istringstream inputStream("Hello, world!");
     CharacterSet inputSet;
     inputStream >> inputSet;
-    cout << "Ввод: \"abcde\"" << endl;
+    cout << "Ввод: " << endl;
     cout << "Результат: " << inputSet << endl;
     cout << "Мощность: " << inputSet.getCardinality() << endl;
 

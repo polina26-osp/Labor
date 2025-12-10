@@ -1,5 +1,6 @@
 ﻿#include <string.h>
 #include <iostream>
+#include <sstream>
 #include "characterset.h"
 
 // Конструктор по умолчанию
@@ -165,7 +166,7 @@ std::ostream& operator<<(std::ostream& outputStream, const CharacterSet& charact
 std::istream& operator>>(std::istream& inputStream, CharacterSet& characterSet)
 {
     std::string input;
-    inputStream >> input; 
+    std::getline(inputStream, input);
 
     characterSet = CharacterSet();
 
