@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <stdint.h>
 #include <iostream>
@@ -8,32 +8,32 @@
 class BooleanMatrix
 {
 public:
-    // Конструкторы
-    BooleanMatrix() = default;  // Конструктор по умолчанию
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
+    BooleanMatrix() = default;  // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
     BooleanMatrix(const uint32_t numRows, const uint32_t numColumns, const bool initialValue = false);
     BooleanMatrix(const char** charMatrix, const uint32_t numRows);
-    BooleanMatrix(const BooleanMatrix&) = default;   // Конструктор копирования
-    ~BooleanMatrix() = default;  // Деструктор
+    BooleanMatrix(const BooleanMatrix&) = default;   // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+    ~BooleanMatrix() = default;  // Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 
-    // Методы доступа
+    // РњРµС‚РѕРґС‹ РґРѕСЃС‚СѓРїР°
     uint32_t numRows() const;
     uint32_t numColumns() const;
     void swap(BooleanMatrix& other);
 
-    // Операции с матрицей
+    // РћРїРµСЂР°С†РёРё СЃ РјР°С‚СЂРёС†РµР№
     uint32_t getWeight() const;
     BooleanVector conjunctionAllRows() const;
     BooleanVector disjunctionAllRows() const;
 
-    // Операции со строками
+    // РћРїРµСЂР°С†РёРё СЃРѕ СЃС‚СЂРѕРєР°РјРё
     uint32_t getRowWeight(const uint32_t rowIndex) const;
     void invertBit(const uint32_t rowIndex, const uint32_t bitIndex);
     void invertBits(const uint32_t rowIndex, const uint32_t startBitIndex, const uint32_t k);
     void setBit(const uint32_t rowIndex, const uint32_t bitIndex, const bool value);
     void setBits(const uint32_t rowIndex, const uint32_t startBitIndex, const uint32_t k, const bool value);
 
-    // Перегрузки операторов
-    BooleanMatrix& operator=(const BooleanMatrix&) = default;     // Оператор присваивания 
+    // РџРµСЂРµРіСЂСѓР·РєРё РѕРїРµСЂР°С‚РѕСЂРѕРІ
+    BooleanMatrix& operator=(const BooleanMatrix&) = default;     // РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ 
     BooleanVector& operator[](const uint32_t rowIndex);
     const BooleanVector& operator[](const uint32_t rowIndex) const;
 
@@ -43,13 +43,13 @@ public:
 
     BooleanMatrix operator~() const;
 
-    void addRow(const BooleanVector& row);   // Публичный метод для добавления строк
+    void addRow(const BooleanVector& row);   // РџСѓР±Р»РёС‡РЅС‹Р№ РјРµС‚РѕРґ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ СЃС‚СЂРѕРє
 
 private:
     DynamicArray<BooleanVector> matrixData_;
 };
 
-// Свободные операторы
+// РЎРІРѕР±РѕРґРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹
 BooleanMatrix operator&(const BooleanMatrix& lhs, const BooleanMatrix& rhs);
 BooleanMatrix operator|(const BooleanMatrix& lhs, const BooleanMatrix& rhs);
 BooleanMatrix operator^(const BooleanMatrix& lhs, const BooleanMatrix& rhs);

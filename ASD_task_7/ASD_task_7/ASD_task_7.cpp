@@ -32,7 +32,7 @@ BooleanMatrix readEdgesFromFile(const string& filename) {
             exit(1);
         }
         edges.push_back(Edge{ from, to });
-        // Максимальный номер вершины
+        // Максимальный номер вершины (для размера матрицы)
         if (from > maxVertex) maxVertex = from;
         if (to > maxVertex) maxVertex = to;
     }
@@ -85,15 +85,15 @@ vector<int> topologicalSort(const BooleanMatrix& matrix) {
 
     int step = 1;
 
-    while (result.size() < static_cast<size_t>(n)) {
+    while (result.size() < n) {
         cout << "\nШаг " << step << "\n";
 
         // v1 - дизъюнкция строк необработанных вершин
         vector<bool> v1(n, false);
 
-        // дизъюнкция строк для необработанных вершин
+        // дизъюнкция строк
         for (int i = 0; i < n; i++) {
-            if (!v0[i]) {
+            if (!v0[i]) { // если вершина i не обработана
                 for (int j = 0; j < n; j++) {
                     v1[j] = v1[j] || (matrix[i][j] == true);
                 }
@@ -113,7 +113,7 @@ vector<int> topologicalSort(const BooleanMatrix& matrix) {
         }
         cout << "\n";
 
-        cout << "~v1 (без входящих):";
+        cout << "~v1 (вершины без входящих дуг):";
         for (int i = 0; i < n; i++) {
             cout << (!v1[i] ? "1" : "0");
         }
@@ -147,7 +147,7 @@ vector<int> topologicalSort(const BooleanMatrix& matrix) {
         for (int vertex : candidates) {
             cout << (vertex + 1) << " ";
             result.push_back(vertex + 1);
-            v0[vertex] = true;
+            v0[vertex] = true;  // Помечаем вершну как обработанную 
         }
         cout << "\n";
 
