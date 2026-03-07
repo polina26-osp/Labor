@@ -36,15 +36,18 @@ void copyFile(const char* src, const char* dst) {
 // Исходный файл f разбивается на fa и fb сериями длины p
 void distribute(const char* f, const char* fa, const char* fb, int p) {
     FILE* src = NULL;
-    FILE* dst1 = NULL;
-    FILE* dst2 = NULL;
+    FILE* dst[2] = { NULL, NULL };
     errno_t err_src = fopen_s(&src, f, "rt");
-    errno_t err_dst1 = fopen_s(&dst1, fa, "wt");
-    errno_t err_dst2 = fopen_s(&dst2, fb, "wt");
-    if (err_src != 0 || src == NULL || err_dst1 != 0 || dst1 == NULL || err_dst2 != 0 || dst2 == NULL) {
+    errno_t err_dst[2];
+    err_dst[0] = fopen_s(&dst[0], fa, "wt");
+    err_dst[1] = fopen_s(&dst[1], fb, "wt");
+
+    if (err_src != 0 || src == NULL ||
+        err_dst[0] != 0 || dst[0] == NULL ||
+        err_dst[1] != 0 || dst[1] == NULL) {
         if (src) fclose(src);
-        if (dst1) fclose(dst1);
-        if (dst2) fclose(dst2);
+        if (dst[0]) fclose(dst[0]);
+        if (dst[1]) fclose(dst[1]);
         return;
     }
 
@@ -52,10 +55,8 @@ void distribute(const char* f, const char* fa, const char* fb, int p) {
     int count = 0;     // число элементов в текущей серии
     int value;
     while (fscanf_s(src, "%d", &value) == 1) {
-        if (turn == 0)
-            fprintf(dst1, "%d ", value);
-        else
-            fprintf(dst2, "%d ", value);
+        fprintf(dst[turn], "%d ", value);
+
 
         ++count;
         if (count == p) {
@@ -65,8 +66,8 @@ void distribute(const char* f, const char* fa, const char* fb, int p) {
     }
 
     fclose(src);
-    fclose(dst1);
-    fclose(dst2);
+    fclose(dst[0]);
+    fclose(dst[1]);
 }
 
 // Слияние из двух файлов-источников в два файла-приёмника с чередованием
@@ -75,136 +76,134 @@ void distribute(const char* f, const char* fa, const char* fb, int p) {
 // p - длина серии
 void merge(const char* src1, const char* src2,
     const char* dst1, const char* dst2, int p) {
-    FILE* f1 = NULL;
-    FILE* f2 = NULL;
-    FILE* out1 = NULL;
-    FILE* out2 = NULL;
-    errno_t err_f1 = fopen_s(&f1, src1, "rt");
-    errno_t err_f2 = fopen_s(&f2, src2, "rt");
-    errno_t err_out1 = fopen_s(&out1, dst1, "wt");
-    errno_t err_out2 = fopen_s(&out2, dst2, "wt");
-    if (err_f1 != 0 || f1 == NULL || err_f2 != 0 || f2 == NULL ||
-        err_out1 != 0 || out1 == NULL || err_out2 != 0 || out2 == NULL) {
-        if (f1) fclose(f1);
-        if (f2) fclose(f2);
-        if (out1) fclose(out1);
-        if (out2) fclose(out2);
+    FILE* f[2] = { NULL, NULL };
+    FILE* out[2] = { NULL, NULL };
+    errno_t err_f1 = fopen_s(&f[0], src1, "rt");
+    errno_t err_f2 = fopen_s(&f[1], src2, "rt");
+    errno_t err_out1 = fopen_s(&out[0], dst1, "wt");
+    errno_t err_out2 = fopen_s(&out[1], dst2, "wt");
+    if (err_f1 != 0 || f[0] == NULL || err_f2 != 0 || f[1] == NULL ||
+        err_out1 != 0 || out[0] == NULL || err_out2 != 0 || out[1] == NULL) {
+        if (f[0]) fclose(f[0]);
+        if (f[1]) fclose(f[1]);
+        if (out[0]) fclose(out[0]);
+        if (out[1]) fclose(out[1]);
         return;
     }
 
-    int turn = 0;               // 0 - в out1, 1 - в out2
-    int eof1 = 0, eof2 = 0;     // флаги конца файла, 1 - файл закончился
-    int val1, val2;             // текущие значения файлов
-    int has1 = 0, has2 = 0;     // есть ли еще элементы в текущей серии
-    int remaining1 = 0, remaining2 = 0;     // сколько элементов осталось в текущей серии
+    int turn = 0;               // 0 - в out[0], 1 - в out[1]
+    int eof[2] = { 0, 0 };     // флаги конца файла, 1 - файл закончился
+    int val[2];             // текущие значения файлов
+    int has[2] = { 0, 0 };     // есть ли еще элементы в текущей серии
+    int remaining[2] = { 0, 0 };     // сколько элементов осталось в текущей серии
 
     while (1) {
         // Попытка начать новую серию из первого файла
-        if (!eof1 && remaining1 == 0) {     //выполняется если файл еще не закончился и серия полностью обработана
-            remaining1 = p;
-            if (fscanf_s(f1, "%d", &val1) == 1) {
-                has1 = 1;
-                --remaining1;
+        if (!eof[0] && remaining[0] == 0) {
+            remaining[0] = p;
+            if (fscanf_s(f[0], "%d", &val[0]) == 1) {
+                has[0] = 1;
+                --remaining[0];
             }
             else {
-                eof1 = 1;      // файл 1 закончился
-                remaining1 = 0;
-                has1 = 0;
+                eof[0] = 1;
+                remaining[0] = 0;
+                has[0] = 0;
             }
         }
         // Попытка начать новую серию из второго файла
-        if (!eof2 && remaining2 == 0) {
-            remaining2 = p;
-            if (fscanf_s(f2, "%d", &val2) == 1) {
-                has2 = 1;
-                --remaining2;
+        if (!eof[1] && remaining[1] == 0) {
+            remaining[1] = p;
+            if (fscanf_s(f[1], "%d", &val[1]) == 1) {
+                has[1] = 1;
+                --remaining[1];
             }
             else {
-                eof2 = 1;   // файл 2 закончился
-                remaining2 = 0;
-                has2 = 0;
+                eof[1] = 1;
+                remaining[1] = 0;
+                has[1] = 0;
             }
         }
 
         // Если оба файла закончились – выход
-        if (eof1 && eof2) break;
+        if (eof[0] && eof[1]) break;
 
         // Чередования файлов для записи
-        FILE* out = (turn == 0) ? out1 : out2;
+        FILE* currentOut = out[turn];
 
         // Слияние двух текущих серий 
-        while (has1 || has2) {
-            if (has1 && has2) {
-                if (val1 <= val2) {
-                    fprintf(out, "%d ", val1);
+        while (has[0] || has[1]) {
+            if (has[0] && has[1]) {
+                if (val[0] <= val[1]) {
+                    fprintf(currentOut, "%d ", val[0]);
                     // Чтение следующего элемента из первого файла
-                    if (remaining1 > 0) {
-                        if (fscanf_s(f1, "%d", &val1) == 1) {
-                            --remaining1;
+                    if (remaining[0] > 0) {
+                        if (fscanf_s(f[0], "%d", &val[0]) == 1) {
+                            --remaining[0];
                         }
                         else {
-                            has1 = 0;   // серия 1 закончилась
-                            eof1 = 1;   // файл закончился
+                            has[0] = 0;
+                            eof[0] = 1;
                         }
                     }
                     else {
-                        has1 = 0;   // серия 1 закончилась
+                        has[0] = 0;
                     }
                 }
                 else {
-                    fprintf(out, "%d ", val2);
-                    if (remaining2 > 0) {
-                        if (fscanf_s(f2, "%d", &val2) == 1) {
-                            --remaining2;
+                    fprintf(currentOut, "%d ", val[1]);
+                    if (remaining[1] > 0) {
+                        if (fscanf_s(f[1], "%d", &val[1]) == 1) {
+                            --remaining[1];
                         }
                         else {
-                            has2 = 0;
-                            eof2 = 1;
+                            has[1] = 0;
+                            eof[1] = 1;
                         }
                     }
                     else {
-                        has2 = 0;
+                        has[1] = 0;
                     }
                 }
             }
-            else if (has1) {        // только в 1 файле есть элементы
-                fprintf(out, "%d ", val1);
-                if (remaining1 > 0) {
-                    if (fscanf_s(f1, "%d", &val1) == 1) {
-                        --remaining1;
+            else if (has[0]) {
+                fprintf(currentOut, "%d ", val[0]);
+                if (remaining[0] > 0) {
+                    if (fscanf_s(f[0], "%d", &val[0]) == 1) {
+                        --remaining[0];
                     }
                     else {
-                        has1 = 0;
-                        eof1 = 1;
+                        has[0] = 0;
+                        eof[0] = 1;
                     }
                 }
                 else {
-                    has1 = 0;
+                    has[0] = 0;
                 }
             }
-            else if (has2) {        // только во 2 файле есть элементы
-                fprintf(out, "%d ", val2);
-                if (remaining2 > 0) {
-                    if (fscanf_s(f2, "%d", &val2) == 1) {
-                        --remaining2;
+            else if (has[1]) {
+                fprintf(currentOut, "%d ", val[1]);
+                if (remaining[1] > 0) {
+                    if (fscanf_s(f[1], "%d", &val[1]) == 1) {
+                        --remaining[1];
                     }
                     else {
-                        has2 = 0;
-                        eof2 = 1;
+                        has[1] = 0;
+                        eof[1] = 1;
                     }
                 }
                 else {
-                    has2 = 0;
+                    has[1] = 0;
                 }
             }
         }
-        turn = 1 - turn;        // две серии слиты, переключаемся на другой выходной файл
+        turn = 1 - turn;
     }
 
-    fclose(f1);
-    fclose(f2);
-    fclose(out1);
-    fclose(out2);
+    fclose(f[0]);
+    fclose(f[1]);
+    fclose(out[0]);
+    fclose(out[1]);
 }
 
 // Функция сортировки прямым слиянием на 4-ех файла
@@ -215,28 +214,38 @@ void sortFile(const char* inputFilename) {
     const char* fd = "fd.tmp";
 
     int p = 1;
+    int phase = 0;
 
     // Разбиение исходного файла на fa и fb
     distribute(inputFilename, fa, fb, p);
 
     while (1) {
-        // Слияние из fa, fb в fc, fd
-        merge(fa, fb, fc, fd, p);
-        if (isFileEmpty(fc) || isFileEmpty(fd)) {       // Если один из выходных файлов пуст - сортировка завершена
-            const char* result = isFileEmpty(fc) ? fd : fc;
-            copyFile(result, inputFilename);
-            break;
-        }
-        p *= 2;     // увеличение размера серии
+        const char* src1 = (phase == 0) ? fa : fc;
+        const char* src2 = (phase == 0) ? fb : fd;
+        const char* dst1 = (phase == 0) ? fc : fa;
+        const char* dst2 = (phase == 0) ? fd : fb;
 
-        // Слияние из fc, fd в fa, fb
-        merge(fc, fd, fa, fb, p);
-        if (isFileEmpty(fa) || isFileEmpty(fb)) {
-            const char* result = isFileEmpty(fa) ? fb : fa;
+        merge(src1, src2, dst1, dst2, p);
+
+        const char* result = NULL;
+        if (phase == 0) {
+            if (isFileEmpty(fc) || isFileEmpty(fd)) {
+                result = isFileEmpty(fc) ? fd : fc;
+            }
+        }
+        else {
+            if (isFileEmpty(fa) || isFileEmpty(fb)) {
+                result = isFileEmpty(fa) ? fb : fa;
+            }
+        }
+
+        if (result != NULL) {
             copyFile(result, inputFilename);
             break;
         }
+
         p *= 2;
+        phase = 1 - phase;
     }
 
     // Удаление временных файлов
