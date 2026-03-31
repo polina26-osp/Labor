@@ -145,4 +145,3 @@ private:
 
 // Перегрузка оператора вывода для узла
 std::ostream& operator<<(std::ostream&, BinaryTree::TreeNode&);
-

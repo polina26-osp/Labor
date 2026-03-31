@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <QMainWindow>
 
@@ -14,22 +14,22 @@ class MainWindow : public QMainWindow
 
 public:
 
-    // Конструктор
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
     MainWindow(QWidget* parent = nullptr);
-    // Деструктор
+    // Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
     ~MainWindow();
 
-    // Получение указателя на дерево
+    // РџРѕР»СѓС‡РµРЅРёРµ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РґРµСЂРµРІРѕ
     BinaryTree* getTree() { return tree_; }
 
 private:
 
-    // Контейнер для виджетов
+    // РљРѕРЅС‚РµР№РЅРµСЂ РґР»СЏ РІРёРґР¶РµС‚РѕРІ
     QWidget* container_;
-    // Виджет для отрисовки дерева
+    // Р’РёРґР¶РµС‚ РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё РґРµСЂРµРІР°
     CanvasWidget* canvasWidget_;
-    // Компановка
+    // РљРѕРјРїР°РЅРѕРІРєР°
     QHBoxLayout* mainLayout_;
-    // Указатель на дерево
+    // РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РґРµСЂРµРІРѕ
     BinaryTree* tree_;
 };

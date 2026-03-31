@@ -1,41 +1,41 @@
-#include <QHBoxLayout>
+п»ї#include <QHBoxLayout>
 #include <time.h>
 #include <stdlib.h>
 #include "canvaswidget.h"
 #include "mainwindow.h"
 #include "binarytree.h"
 
-// Конструктор главного окна
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 {
-    // Инициализация генератора случайных чисел
+    // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РіРµРЅРµСЂР°С‚РѕСЂР° СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
     srand(time(nullptr));
 
-    // Создание дерева
+    // РЎРѕР·РґР°РЅРёРµ РґРµСЂРµРІР°
     tree_ = new BinaryTree();
 
-    // Добавление 40 случайных узлов в дерево
-    for (int i = 0; i < 40; i++)
+    // Р”РѕР±Р°РІР»РµРЅРёРµ 40 СЃР»СѓС‡Р°Р№РЅС‹С… СѓР·Р»РѕРІ РІ РґРµСЂРµРІРѕ
+    for (int i = 0; i < 30; i++)
     {
         tree_->addNode(rand() % 100);
     }
 
-    // Настройка окна
+    // РќР°СЃС‚СЂРѕР№РєР° РѕРєРЅР°
     setWindowTitle("Binary Tree");
     resize(960, 720);
 
-    // Компоновка и виджет для отрисовки
+    // РљРѕРјРїРѕРЅРѕРІРєР° Рё РІРёРґР¶РµС‚ РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё
     mainLayout_ = new QHBoxLayout();
     canvasWidget_ = new CanvasWidget();
     mainLayout_->addWidget(canvasWidget_);
 
-    // Установка центрального виджета
+    // РЈСЃС‚Р°РЅРѕРІРєР° С†РµРЅС‚СЂР°Р»СЊРЅРѕРіРѕ РІРёРґР¶РµС‚Р°
     container_ = new QWidget();
     setCentralWidget(container_);
     container_->setLayout(mainLayout_);
 }
 
-// Деструктор главного окна
+// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ РіР»Р°РІРЅРѕРіРѕ РѕРєРЅР°
 MainWindow::~MainWindow()
 {
     delete tree_;

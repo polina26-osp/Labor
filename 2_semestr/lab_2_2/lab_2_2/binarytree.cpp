@@ -1,6 +1,4 @@
-﻿
-
-#include <stdlib.h>
+﻿#include <stdlib.h>
 #include <limits>
 #include <iostream>
 #include <list>
