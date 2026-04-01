@@ -28,7 +28,7 @@ private:
     QWidget* container_;
     // Виджет для отрисовки дерева
     CanvasWidget* canvasWidget_;
-    // Компановка
+    // Компоновка
     QHBoxLayout* mainLayout_;
     // Указатель на дерево
     BinaryTree* tree_;

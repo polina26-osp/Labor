@@ -1,5 +1,4 @@
 ﻿
-
 #include <stdlib.h>
 #include <limits>
 #include <iostream>
@@ -155,7 +154,8 @@ std::vector<int> BinaryTree::getKeysAscending() const
     std::vector<int> keys;
     if (root_)
     {
-        getKeysAscendingInternal(keys, root_);
+        getAllKeysInternal(keys, root_);
+        std::sort(keys.begin(), keys.end());
     }
     return keys;
 }
@@ -289,26 +289,9 @@ BinaryTree::TreeNode* BinaryTree::findMinNode(TreeNode* node) const
 // Рекурсивное удаление узла по ключу
 bool BinaryTree::removeNodeInternal(TreeNode*& node, const int key)
 {
-    if (!node)
-    {
-        return false;
-    }
+    if (!node) return false;
 
-    if (key < node->getKey())
-    {
-        TreeNode* left = node->getLeftChild();
-        bool result = removeNodeInternal(left, key);
-        node->setLeftChild(left);
-        return result;
-    }
-    else if (key > node->getKey())
-    {
-        TreeNode* right = node->getRightChild();
-        bool result = removeNodeInternal(right, key);
-        node->setRightChild(right);
-        return result;
-    }
-    else
+    if (node->getKey() == key)
     {
         TreeNode* nodeToDelete = node;
 
@@ -316,36 +299,53 @@ bool BinaryTree::removeNodeInternal(TreeNode*& node, const int key)
         {
             node = nullptr;
         }
-        else if (!node->getLeftChild())
-        {
-            node = node->getRightChild();
-        }
         else if (!node->getRightChild())
         {
             node = node->getLeftChild();
         }
+        else if (!node->getLeftChild())
+        {
+            node = node->getRightChild();
+        }
         else
         {
-            TreeNode* minRight = findMinNode(node->getRightChild());
-            int minKey = minRight->getKey();
-            node->setKey(minKey);
-            TreeNode* right = node->getRightChild();
-            removeNodeInternal(right, minKey);
-            node->setRightChild(right);
+            TreeNode* rightmost = node->getLeftChild();
+            while (rightmost->getRightChild())
+            {
+                rightmost = rightmost->getRightChild();
+            }
+            rightmost->setRightChild(node->getRightChild());
+            node = node->getLeftChild();
         }
 
         delete nodeToDelete;
         return true;
     }
+
+    TreeNode* leftChild = node->getLeftChild();
+    if (removeNodeInternal(leftChild, key))
+    {
+        node->setLeftChild(leftChild);
+        return true;
+    }
+
+    TreeNode* rightChild = node->getRightChild();
+    if (removeNodeInternal(rightChild, key))
+    {
+        node->setRightChild(rightChild);
+        return true;
+    }
+
+    return false;
 }
 
 // Рекурсивное получение ключей по возрастанию
-void BinaryTree::getKeysAscendingInternal(std::vector<int>& keys, TreeNode* treeNode) const
+void BinaryTree::getAllKeysInternal(std::vector<int>& keysArray, TreeNode* treeNode) const
 {
     if (!treeNode) return;
-    getKeysAscendingInternal(keys, treeNode->getLeftChild());
-    keys.push_back(treeNode->getKey());
-    getKeysAscendingInternal(keys, treeNode->getRightChild());
+    keysArray.push_back(treeNode->getKey());
+    if (treeNode->getLeftChild()) getAllKeysInternal(keysArray, treeNode->getLeftChild());
+    if (treeNode->getRightChild()) getAllKeysInternal(keysArray, treeNode->getRightChild());
 }
 
 // Конструктор по умолчанию узла
@@ -395,3 +395,5 @@ std::ostream& operator<<(std::ostream& outputStream, BinaryTree::TreeNode& treeN
     outputStream << treeNode.getKey();
     return outputStream;
 }
+
+

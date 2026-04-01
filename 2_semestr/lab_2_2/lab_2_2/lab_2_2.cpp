@@ -53,7 +53,7 @@ int main()
     }
     cout << endl << endl;
 
-    cout << "9. Горизонтальный вывод:" << endl;
+    cout << "9. Горизонтальный вывод ДО удаления:" << endl;
     tree1.printHorizontal();
     cout << endl;
 
@@ -70,13 +70,18 @@ int main()
     }
     cout << endl;
 
-    cout << "11. Удаление узла " << addedKeys[0] << endl;
-    bool removed = tree1.removeNode(addedKeys[0]);
+    cout << "11. Удаление узла " << addedKeys[10] << endl;
+    bool removed = tree1.removeNode(addedKeys[10]);
     if (removed)
     {
         cout << " Узел удалён" << endl;
     }
     cout << " Узлов после удаления: " << tree1.getNodeCount() << endl << endl;
+
+    cout << "12. Горизонтальный вывод ПОСЛЕ удаления:" << endl;
+    tree1.printHorizontal();
+    cout << endl;
+
 
     cout << "12. Конструктор копирования" << endl;
     BinaryTree tree2(tree1);

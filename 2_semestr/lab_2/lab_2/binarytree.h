@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿
+#pragma once
 
 #include <vector>
 #include <iostream>
@@ -97,8 +98,9 @@ private:
     // Поиск минимального узла в поддереве
     TreeNode* findMinNode(TreeNode* node) const;
 
-    // Рекурсивное получение ключей по возрастанию
-    void getKeysAscendingInternal(std::vector<int>&, TreeNode*) const;
+    // Рекурсивное получение всех ключей
+    void getAllKeysInternal(std::vector<int>&, TreeNode*) const;
+
 };
 
 class BinaryTree::TreeNode

@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     // Создание дерева
     tree_ = new BinaryTree();
 
-    // Добавление 40 случайных узлов в дерево
+    // Добавление 30 случайных узлов в дерево
     for (int i = 0; i < 30; i++)
     {
         tree_->addNode(rand() % 100);
