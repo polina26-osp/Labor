@@ -7,7 +7,7 @@ BinarySearchTree::~BinarySearchTree()
     clear();
 }
 
-// Добавление узла в дерево (алгоритм бинарного дерева поиска)
+// Добавление узла в дерево 
 BinaryTree::TreeNode* BinarySearchTree::addNode(const int key)
 {
     if (!root_)
@@ -47,13 +47,13 @@ BinaryTree::TreeNode* BinarySearchTree::addNode(const int key)
     }
 }
 
-// Удаление узла из дерева по ключу (алгоритм бинарного дерева поиска)
+// Удаление узла из дерева по ключу 
 bool BinarySearchTree::removeNode(const int key)
 {
     return removeNodeInternal(root_, key);
 }
 
-// Поиск узла дерева по ключу (алгоритм бинарного дерева поиска)
+// Поиск узла дерева по ключу 
 BinaryTree::TreeNode* BinarySearchTree::findNode(const int key) const
 {
     TreeNode* currentNode = root_;
@@ -69,6 +69,46 @@ BinaryTree::TreeNode* BinarySearchTree::findNode(const int key) const
     }
 
     return nullptr;
+}
+
+// Получение минимального ключа (самый левый узел) 
+int BinarySearchTree::getMinimalKey() const
+{
+    if (!root_)
+    {
+        return std::numeric_limits<int>::max();
+    }
+
+    TreeNode* currentNode = root_;
+    while (currentNode->getLeftChild())
+    {
+        currentNode = currentNode->getLeftChild();
+    }
+    return currentNode->getKey();
+}
+
+// Получение максимального ключа (самый правый узел)
+int BinarySearchTree::getMaxKey() const
+{
+    if (!root_)
+    {
+        return std::numeric_limits<int>::min();
+    }
+
+    TreeNode* currentNode = root_;
+    while (currentNode->getRightChild())
+    {
+        currentNode = currentNode->getRightChild();
+    }
+    return currentNode->getKey();
+}
+
+// Получение всех ключей по возрастанию (рекурсивный обход ЛКП)
+std::vector<int> BinarySearchTree::getKeysAscending() const
+{
+    std::vector<int> keys;
+    getKeysAscendingInternal(root_, keys);
+    return keys;
 }
 
 // Поиск минимального узла в поддереве (вспомогательный метод для удаления)
@@ -112,29 +152,26 @@ bool BinarySearchTree::removeNodeInternal(TreeNode*& node, const int key)
         // Узел найден
         TreeNode* nodeToDelete = node;
 
-        // Случай 1: у узла нет детей
+        // У узла нет детей
         if (!node->getLeftChild() && !node->getRightChild())
         {
             node = nullptr;
         }
-        // Случай 2: у узла есть только правый ребёнок
+        // У узла есть только правый потомок
         else if (!node->getLeftChild())
         {
             node = node->getRightChild();
         }
-        // Случай 3: у узла есть только левый ребёнок
+        // У узла есть только левый потомок
         else if (!node->getRightChild())
         {
             node = node->getLeftChild();
         }
-        // Случай 4: у узла есть два ребёнка
+        // У узла есть два потомка
         else
         {
-            // Находим минимальный узел в правом поддереве
             TreeNode* minNode = findMinNode(node->getRightChild());
-            // Копируем его ключ в текущий узел
             node->setKey(minNode->getKey());
-            // Удаляем минимальный узел из правого поддерева
             TreeNode* rightChild = node->getRightChild();
             if (removeNodeInternal(rightChild, minNode->getKey()))
             {
@@ -147,3 +184,14 @@ bool BinarySearchTree::removeNodeInternal(TreeNode*& node, const int key)
         return true;
     }
 }
+
+// Рекурсивный обход ЛКП для получения отсортированных ключей
+void BinarySearchTree::getKeysAscendingInternal(TreeNode* node, std::vector<int>& keys) const
+{
+    if (!node) return;
+
+    getKeysAscendingInternal(node->getLeftChild(), keys);
+    keys.push_back(node->getKey());
+    getKeysAscendingInternal(node->getRightChild(), keys);
+}
+

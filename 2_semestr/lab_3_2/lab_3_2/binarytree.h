@@ -37,7 +37,7 @@ public:
     size_t getNodeCount() const;
 
     // Получение минимального ключа дерева
-    virtual int getMiminalKey() const;
+    virtual int getMinimalKey() const;
 
     // Получение максимального ключа дерева
     virtual int getMaxKey() const;
@@ -65,7 +65,7 @@ public:
 
 protected:
 
-    // Корень дерева (доступен наследникам)
+    // Корень дерева 
     TreeNode* root_ = nullptr;
 
 private:
@@ -74,7 +74,7 @@ private:
     void getAllNodesInternal(std::vector<TreeNode*>&, TreeNode*) const;
 
     // Рекурсивный поиск минимального ключа
-    int getMiminalKeyInternal(TreeNode*) const;
+    int getMinimalKeyInternal(TreeNode*) const;
 
     // Рекурсивный поиск максимального ключа
     int getMaxKeyInternal(TreeNode*) const;

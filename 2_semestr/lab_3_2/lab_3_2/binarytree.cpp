@@ -66,13 +66,13 @@ int BinaryTree::getHeight() const
 }
 
 // Получение минимального ключа дерева
-int BinaryTree::getMiminalKey() const
+int BinaryTree::getMinimalKey() const
 {
     if (!root_)
     {
         return std::numeric_limits<int>::max();
     }
-    return getMiminalKeyInternal(root_);
+    return getMinimalKeyInternal(root_);
 }
 
 // Получение максимального ключа дерева
@@ -210,13 +210,13 @@ void BinaryTree::getAllNodesInternal(std::vector<TreeNode*>& nodesArray, TreeNod
 }
 
 // Рекурсивный поиск минимального ключа
-int BinaryTree::getMiminalKeyInternal(TreeNode* treeNode) const
+int BinaryTree::getMinimalKeyInternal(TreeNode* treeNode) const
 {
     if (!treeNode) return std::numeric_limits<int>::max();
 
     int value = treeNode->getKey();
-    if (treeNode->getLeftChild()) value = std::min(value, getMiminalKeyInternal(treeNode->getLeftChild()));
-    if (treeNode->getRightChild()) value = std::min(value, getMiminalKeyInternal(treeNode->getRightChild()));
+    if (treeNode->getLeftChild()) value = std::min(value, getMinimalKeyInternal(treeNode->getLeftChild()));
+    if (treeNode->getRightChild()) value = std::min(value, getMinimalKeyInternal(treeNode->getRightChild()));
     return value;
 }
 

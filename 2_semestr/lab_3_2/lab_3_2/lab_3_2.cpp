@@ -16,7 +16,7 @@ int main()
     BinarySearchTree tree1;
     cout << "   isEmpty() = " << (tree1.isEmpty() ? "true" : "false") << endl << endl;
 
-    cout << "2. Добавление узлов (BST алгоритм)" << endl;
+    cout << "2. Добавление узлов " << endl;
     vector<int> addedKeys;
     for (int i = 0; i < 15; i++)
     {
@@ -27,25 +27,11 @@ int main()
     }
     cout << endl;
 
-    cout << "3. Корень дерева: ";
-    if (tree1.getRoot())
-    {
-        cout << tree1.getRoot()->getKey() << endl << endl;
-    }
-    else
-    {
-        cout << "Дерево пустое" << endl << endl;
-    }
+    cout << "3. Получение минимального ключа (самый левый узел): " << tree1.getMinimalKey() << endl << endl;
 
-    cout << "4. Количество узлов: " << tree1.getNodeCount() << endl << endl;
+    cout << "4. Получение максимального ключа (самый правый узел): " << tree1.getMaxKey() << endl << endl;
 
-    cout << "5. Высота дерева: " << tree1.getHeight() << endl << endl;
-
-    cout << "6. Минимальный ключ: " << tree1.getMiminalKey() << endl << endl;
-
-    cout << "7. Максимальный ключ: " << tree1.getMaxKey() << endl << endl;
-
-    cout << "8. Ключи по возрастанию: ";
+    cout << "5. Получение всех ключей по возрастанию (обход ЛКП): ";
     vector<int> keys = tree1.getKeysAscending();
     for (int k : keys)
     {
@@ -53,11 +39,7 @@ int main()
     }
     cout << endl << endl;
 
-    cout << "9. Горизонтальный вывод ДО удаления:" << endl;
-    tree1.printHorizontal();
-    cout << endl;
-
-    cout << "10. Поиск узла (BST алгоритм)" << endl;
+    cout << "6. Поиск узла " << endl;
     int searchKey = addedKeys[addedKeys.size() / 2];
     BinaryTree::TreeNode* found = tree1.findNode(searchKey);
     if (found)
@@ -70,28 +52,26 @@ int main()
     }
     cout << endl;
 
-    cout << "11. Удаление узла " << addedKeys[10] << " (BST алгоритм)" << endl;
-    bool removed = tree1.removeNode(addedKeys[10]);
+    cout << "7. Удаление узла " << endl;
+    int removeKey = addedKeys[10];
+    cout << " Удаление узла " << removeKey << endl;
+    bool removed = tree1.removeNode(removeKey);
     if (removed)
     {
         cout << " Узел удалён" << endl;
     }
     cout << " Узлов после удаления: " << tree1.getNodeCount() << endl << endl;
 
-    cout << "12. Горизонтальный вывод ПОСЛЕ удаления:" << endl;
-    tree1.printHorizontal();
-    cout << endl;
-
-    cout << "13. Конструктор копирования" << endl;
+    cout << "8. Конструктор копирования " << endl;
     BinarySearchTree tree2(tree1);
     cout << " Узлов в копии: " << tree2.getNodeCount() << endl << endl;
 
-    cout << "14. Оператор присваивания" << endl;
+    cout << "9. Оператор присваивания " << endl;
     BinarySearchTree tree3;
     tree3 = tree1;
     cout << " Узлов: " << tree3.getNodeCount() << endl << endl;
 
-    cout << "15. Очистка дерева" << endl;
+    cout << "10. Очистка дерева" << endl;
     tree1.clear();
     cout << " isEmpty() = " << (tree1.isEmpty() ? "true" : "false") << endl;
 
