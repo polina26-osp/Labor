@@ -1,5 +1,6 @@
 ﻿#include <limits>
 #include "binarysearchtree.h"
+#include <iostream> 
 
 // Деструктор
 BinarySearchTree::~BinarySearchTree()
@@ -79,12 +80,8 @@ int BinarySearchTree::getMinimalKey() const
         return std::numeric_limits<int>::max();
     }
 
-    TreeNode* currentNode = root_;
-    while (currentNode->getLeftChild())
-    {
-        currentNode = currentNode->getLeftChild();
-    }
-    return currentNode->getKey();
+    TreeNode* minNode = findMinNode(root_);
+    return minNode->getKey();
 }
 
 // Получение максимального ключа (самый правый узел)
@@ -106,6 +103,7 @@ int BinarySearchTree::getMaxKey() const
 // Получение всех ключей по возрастанию (рекурсивный обход ЛКП)
 std::vector<int> BinarySearchTree::getKeysAscending() const
 {
+    std::cout << "Обход ЛКП" << std::endl;
     std::vector<int> keys;
     getKeysAscendingInternal(root_, keys);
     return keys;

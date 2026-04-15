@@ -28,7 +28,7 @@ public:
     virtual int getMaxKey() const override;
 
     // Получение всех ключей по возрастанию (рекурсивный обход ЛКП) 
-    virtual std::vector<int> getKeysAscending() const;
+    virtual std::vector<int> getKeysAscending() const override;
 
 private:
 

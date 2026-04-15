@@ -52,7 +52,7 @@ public:
     virtual TreeNode* findNode(const int key) const;
 
     // получение вектора (std::vector<int>), содержащего все ключи дерева по возрастанию 
-    std::vector<int> getKeysAscending() const;
+    virtual std::vector<int> getKeysAscending() const;
 
     // Вывод в консоль дерева в горизонтальном виде (самый правый потомок находится на первой строке, самый левый - на нижней)
     void printHorizontal() const;

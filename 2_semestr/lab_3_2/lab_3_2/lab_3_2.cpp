@@ -32,8 +32,10 @@ int main()
     cout << "4. Получение максимального ключа (самый правый узел): " << tree1.getMaxKey() << endl << endl;
 
     cout << "5. Получение всех ключей по возрастанию (обход ЛКП): ";
-    vector<int> keys = tree1.getKeysAscending();
-    for (int k : keys)
+    //vector<int> keys = tree1.getKeysAscending();
+    BinaryTree* basePtr = &tree1; 
+    vector<int> keys2 = basePtr->getKeysAscending();
+    for (int k : keys2)
     {
         cout << k << " ";
     }
