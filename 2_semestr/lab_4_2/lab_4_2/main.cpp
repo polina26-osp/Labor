@@ -90,6 +90,82 @@ int main()
     for (int k : keys5) cout << k << " ";
     cout << endl;
     cout << "tree2 после перемещения, узлов: " << tree2.getNodeCount() << endl << endl;
+    cout << "========== " << endl << endl;
+
+
+    BinarySearchTree testTree;
+    testTree.addNode(50);
+    testTree.addNode(30);
+    testTree.addNode(70);
+    testTree.addNode(20);
+    testTree.addNode(40);
+    testTree.addNode(60);
+    testTree.addNode(80);
+
+    cout << "Новое исходное дерево testTree:\n";
+    cout << "узлов: " << testTree.getNodeCount() << endl;
+    cout << "ключи: ";
+    vector<int> testKeys = testTree.getKeysAscending();
+    for (int k : testKeys) cout << k << " ";
+    cout << endl << endl;
+
+    // 6. Копирование поддерева
+    cout << " Копирование поддерева (копируем узел с ключом 30 и его поддерево):\n";
+    BinaryTree::TreeNode* node30 = testTree.findNode(30);
+    if (node30)
+    {
+        BinarySearchTree subtreeCopy = testTree.copySubtree(node30);
+        cout << "узлов в копии поддерева: " << subtreeCopy.getNodeCount() << endl;
+        cout << "ключи в копии поддерева: ";
+        vector<int> subKeys = subtreeCopy.getKeysAscending();
+        for (int k : subKeys) cout << k << " ";
+        cout << endl;
+        cout << "высота копии поддерева: " << subtreeCopy.getHeight() << endl;
+    }
+    cout << endl;
+
+    // 7. Рекурсивное добавление
+    cout << "Рекурсивное добавление узла (добавляем ключ 25):\n";
+    testTree.addNodeRecursive(25);
+    cout << "узлов после добавления: " << testTree.getNodeCount() << endl;
+    cout << "ключи после добавления: ";
+    vector<int> keysAfterAdd = testTree.getKeysAscending();
+    for (int k : keysAfterAdd) cout << k << " ";
+    cout << endl;
+    cout << "высота после добавления: " << testTree.getHeight() << endl << endl;
+
+    // 8. Удаление (через максимальный узел левого поддерева)
+    cout << "Удаление узла (удаляем ключ 30):\n";
+    bool removed = testTree.removeNodeAlt(30);
+    if (removed)
+    {
+        cout << "узел 30 успешно удалён\n";
+        cout << "узлов после удаления: " << testTree.getNodeCount() << endl;
+        cout << "ключи после удаления: ";
+        vector<int> keysAfterRemove = testTree.getKeysAscending();
+        for (int k : keysAfterRemove) cout << k << " ";
+        cout << endl;
+        cout << "высота после удаления: " << testTree.getHeight() << endl;
+    }
+    else
+    {
+        cout << "узел 30 не найден\n";
+    }
+    cout << endl;
+
+    // 9. Удаление листа
+    cout << "Удаление листа (удаляем ключ 25):\n";
+    removed = testTree.removeNodeAlt(25);
+    if (removed)
+    {
+        cout << "узел 25 успешно удалён\n";
+        cout << "узлов после удаления: " << testTree.getNodeCount() << endl;
+        cout << "ключи после удаления: ";
+        vector<int> keysAfterRemove = testTree.getKeysAscending();
+        for (int k : keysAfterRemove) cout << k << " ";
+        cout << endl;
+    }
+    cout << endl;
 
     return 0;
 }

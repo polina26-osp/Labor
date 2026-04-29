@@ -234,13 +234,13 @@ void BinarySearchTree::getKeysAscendingInternal(TreeNode* node, vector<int>& key
 using MatrixRow = vector<unsigned int>;
 using Matrix = vector<MatrixRow>;
 
-// Создание квадратной нулевой матрицы 
+// Квадратная нулевая матрица
 static Matrix createMatrix(size_t size)
 {
     return Matrix(size, MatrixRow(size, 0));
 }
 
-// Вывод матрицы в консоль
+// Выод матрицы в консоль
 static void printMatrix(ostream& outputStream, const Matrix& matrix, const string& preamble)
 {
     outputStream << preamble << endl;
@@ -289,7 +289,7 @@ BinarySearchTree BinarySearchTree::createOptimalSearchTree(
     printMatrix(cout, costMatrix, "C: ");
     printMatrix(cout, rootIndicesMatrix, "R: ");
 
-    // Инициализация для деревьев с 0 вершин 
+    // Для деревьев с 0 вершин 
     for (size_t i = 0; i < matrixSize; i++)
     {
         weightMatrix[i][i] = trapFreq[i];
@@ -344,7 +344,7 @@ BinarySearchTree BinarySearchTree::createOptimalSearchTree(
     printMatrix(cout, costMatrix, "C: ");
     printMatrix(cout, rootIndicesMatrix, "R: ");
 
-    // Построение дерева по таблице r
+    // Построение дерева по таблице R
     BinarySearchTree optimalTree;
     optimalTree.root_ = buildSubtree(keys, rootIndicesMatrix, 0, static_cast<int>(n));
     return optimalTree;
@@ -353,17 +353,18 @@ BinarySearchTree BinarySearchTree::createOptimalSearchTree(
 // Рекурсивное построение поддерева (вспомогательный метод)
 BinaryTree::TreeNode* BinarySearchTree::buildSubtree(
     const vector<int>& keys,
-    const vector<vector<unsigned int>>& rootIndicesMatrix,
-    int i, int j)
+    const vector<vector<unsigned int>>& rootIndicesMatrix, int i, int j)
 {
+    // пустой интервал - нет ключей
     if (i >= j)
     {
-        return nullptr;
+        return nullptr;     
     }
 
+    // Интервал содержит 1 ключ
     if (j - i == 1)
     {
-        int keyIndex = static_cast<int>(j) - 1;
+        int keyIndex = static_cast<int>(j) - 1;     // номер ключа = индекс массива
         if (keyIndex >= 0 && keyIndex < static_cast<int>(keys.size()))
         {
             return new TreeNode(keys[keyIndex]);
@@ -373,12 +374,13 @@ BinaryTree::TreeNode* BinarySearchTree::buildSubtree(
 
     unsigned int rootIdx = rootIndicesMatrix[i][j];
 
+    // Проверка, корень должен быть в интервале (i, j]
     if (rootIdx <= static_cast<unsigned int>(i) || rootIdx > static_cast<unsigned int>(j))
     {
         return nullptr;
     }
 
-    int keyIndex = static_cast<int>(rootIdx) - 1;
+    int keyIndex = static_cast<int>(rootIdx) - 1;       //номер ключа = индекс массива
 
     if (keyIndex < 0 || keyIndex >= static_cast<int>(keys.size()))
     {
@@ -387,15 +389,147 @@ BinaryTree::TreeNode* BinarySearchTree::buildSubtree(
 
     TreeNode* node = new TreeNode(keys[keyIndex]);
 
+    // Левое поддерево. Ключи от i+1 до rootIdx-1
     if (static_cast<int>(rootIdx - 1) > i)
     {
         node->setLeftChild(buildSubtree(keys, rootIndicesMatrix, i, static_cast<int>(rootIdx - 1)));
     }
 
+
+    // Правое поддерево. Ключи от rootIdx+1 до j
     if (static_cast<int>(rootIdx) < j)
     {
         node->setRightChild(buildSubtree(keys, rootIndicesMatrix, static_cast<int>(rootIdx), j));
     }
 
     return node;
+}
+
+// Вспомогательный метод для копирования поддерева
+BinaryTree::TreeNode* BinarySearchTree::copyNodeHelper(TreeNode* node) const
+{
+    if (!node) return nullptr;
+    TreeNode* newNode = new TreeNode(node->getKey());
+    newNode->setLeftChild(copyNodeHelper(node->getLeftChild()));
+    newNode->setRightChild(copyNodeHelper(node->getRightChild()));
+    return newNode;
+}
+
+// Копирование поддерева узла
+BinarySearchTree BinarySearchTree::copySubtree(TreeNode* node) const
+{
+    BinarySearchTree newTree;
+    if (node)
+    {
+        newTree.root_ = copyNodeHelper(node);
+    }
+    return newTree;
+}
+
+// Добавление узла (рекурсивный алгоритм)
+BinaryTree::TreeNode* BinarySearchTree::addNodeRecursive(const int key)
+{
+    root_ = addNodeRecursiveInternal(root_, key);
+    return findNode(key);
+}
+
+BinaryTree::TreeNode* BinarySearchTree::addNodeRecursiveInternal(TreeNode* node, const int key)
+{
+    if (!node)
+    {
+        return new TreeNode(key);
+    }
+
+    if (key < node->getKey())
+    {
+        node->setLeftChild(addNodeRecursiveInternal(node->getLeftChild(), key));
+    }
+    else if (key > node->getKey())
+    {
+        node->setRightChild(addNodeRecursiveInternal(node->getRightChild(), key));
+    }
+
+    return node;
+}
+
+// Поиск максимального узла (самый правый)
+BinaryTree::TreeNode* BinarySearchTree::findMaxNode(TreeNode* node) const
+{
+    TreeNode* current = node;
+    while (current && current->getRightChild())
+    {
+        current = current->getRightChild();
+    }
+    return current;
+}
+
+//  Удаление через максимальный узел левого поддерева
+bool BinarySearchTree::removeNodeAlt(const int key)
+{
+    return removeNodeAltInternal(root_, key);
+}
+
+bool BinarySearchTree::removeNodeAltInternal(TreeNode*& node, const int key)
+{
+    // пустое поддерево - ключ не найден
+    if (!node) return false;
+
+    // левое поддерево
+    if (key < node->getKey())
+    {
+        TreeNode* leftChild = node->getLeftChild();
+        if (removeNodeAltInternal(leftChild, key))
+        {
+            node->setLeftChild(leftChild);  // новый указатель на левого потомка
+            return true;
+        }
+        return false;
+    }
+    // правое поддерево
+    else if (key > node->getKey())
+    {
+        TreeNode* rightChild = node->getRightChild();
+        if (removeNodeAltInternal(rightChild, key))
+        {
+            node->setRightChild(rightChild);    // новый указатель на правого потомка
+            return true;
+        }
+        return false;
+    }
+    else
+    {
+        TreeNode* nodeToDelete = node;
+
+        // нет потомков
+        if (!node->getLeftChild() && !node->getRightChild())
+        {
+            node = nullptr;
+        }
+        // только левый потомок
+        else if (!node->getRightChild())
+        {
+            node = node->getLeftChild();
+        }
+        // только правый потомок
+        else if (!node->getLeftChild())
+        {
+            node = node->getRightChild();
+        }
+        // есть оба потомка
+        else
+        {
+            TreeNode* maxNode = findMaxNode(node->getLeftChild());  // находим максимальный узел в левом поддереве
+            node->setKey(maxNode->getKey());
+            TreeNode* leftChild = node->getLeftChild();
+            // рекурсивно удаляем максимальный узел из левого поддерева
+            if (removeNodeAltInternal(leftChild, maxNode->getKey()))
+            {
+                node->setLeftChild(leftChild);
+            }
+            nodeToDelete = nullptr;
+        }
+
+        if (nodeToDelete) delete nodeToDelete;
+        return true;
+    }
 }

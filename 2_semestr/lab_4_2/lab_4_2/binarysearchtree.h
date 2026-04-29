@@ -49,6 +49,15 @@ public:
         const std::vector<unsigned int>& trapFreq
     );
 
+    // Копирование поддерева узла (возвращает новый объект класса)
+    BinarySearchTree copySubtree(TreeNode* node) const;
+
+    // Добавление узла в дерево (рекурсивный алгоритм)
+    virtual TreeNode* addNodeRecursive(const int key);
+
+    // Удаление узла из дерева по ключу (возвращает true, если узел был удалён) (через максимальный узел левого поддерева)
+    virtual bool removeNodeAlt(const int key);
+
 private:
 
     // Поиск минимального узла в поддереве (вспомогательный метод для удаления)
@@ -66,4 +75,16 @@ private:
         const std::vector<std::vector<unsigned int>>& rootIndicesMatrix,
         int i, int j
     );
+
+    // Поиск максимального узла в поддереве (для удаления)
+    TreeNode* findMaxNode(TreeNode* node) const;
+
+    // Рекурсивное удаление через максимальный узел левого поддерева
+    bool removeNodeAltInternal(TreeNode*& node, const int key);
+
+    // Рекурсивное добавление узла (вспомогательный метод)
+    TreeNode* addNodeRecursiveInternal(TreeNode* node, const int key);
+
+    // Вспомогательный метод для копирования поддерева
+    TreeNode* copyNodeHelper(TreeNode* node) const;
 };
